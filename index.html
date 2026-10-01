@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closet Kit — VRChat 옷 입히기 · 옷장 세팅</title>
+<meta name="description" content="BOOTH에서 산 옷·헤어를 입히고, 메뉴에서 바로 갈아입을 수 있게 세팅해 드립니다. 미리보기 확인 후 결제. 무료 Unity 툴 Closet Kit 배포 중.">
+<meta property="og:title" content="Closet Kit — VRChat 옷 입히기 · 옷장 세팅">
+<meta property="og:description" content="산 옷, 입혀 드립니다. 여러 벌 옷장 메뉴 + 업로드 용량 진단.">
+<meta property="og:image" content="assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%237c5cff'/><path d='M20 18h24l6 10-8 4v18H22V32l-8-4z' fill='white'/></svg>">
+<style>
+:root{
+  --bg:#f7f5ff; --surface:#ffffff; --surface-2:#f0ecff; --text:#1d1830; --muted:#5f5875;
+  --line:#e3ddf5; --accent:#7c5cff; --accent-ink:#ffffff; --accent-soft:#ece6ff; --ok:#1f9d6b; --warn:#c2410c;
+  --shadow:0 1px 2px rgba(29,24,48,.06),0 8px 24px rgba(29,24,48,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13111c; --surface:#1c1929; --surface-2:#242036; --text:#eeeaff; --muted:#a59fbd;
+    --line:#2f2a45; --accent:#9b83ff; --accent-ink:#13111c; --accent-soft:#2a2442; --ok:#4ed1a0; --warn:#fb923c;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13111c; --surface:#1c1929; --surface-2:#242036; --text:#eeeaff; --muted:#a59fbd;
+  --line:#2f2a45; --accent:#9b83ff; --accent-ink:#13111c; --accent-soft:#2a2442; --ok:#4ed1a0; --warn:#fb923c;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 "Pretendard","Noto Sans KR","Noto Sans JP",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:12px;height:56px}
+.brand{font-weight:800;letter-spacing:-.02em;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:8px}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--accent);display:inline-block}
+nav.links{display:flex;gap:18px;margin-left:auto;font-size:14px}
+nav.links a{color:var(--muted);text-decoration:none}
+nav.links a:hover{color:var(--text)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{border:0;background:transparent;color:var(--muted);padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:720px){nav.links{display:none}.lang{margin-left:auto}}
+
+.hero{padding:56px 0 32px;display:grid;grid-template-columns:.85fr 1.15fr;gap:36px;align-items:center}
+@media (max-width:860px){.hero{grid-template-columns:1fr;padding-top:32px}}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.12;letter-spacing:-.035em;margin:14px 0 14px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 24px;max-width:34em}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;font-weight:700;text-decoration:none;border:1px solid transparent}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{border-color:var(--line);color:var(--text);background:var(--surface)}
+.trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:14px;color:var(--muted)}
+.trust span::before{content:"✓ ";color:var(--ok);font-weight:800}
+.hero-img{border-radius:20px;overflow:hidden;background:var(--surface-2);box-shadow:var(--shadow);border:1px solid var(--line)}
+
+section{padding:56px 0}
+h2{font-size:clamp(26px,4vw,34px);letter-spacing:-.03em;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 28px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+@media (max-width:860px){.g4{grid-template-columns:repeat(2,1fr)}.g3,.g2{grid-template-columns:1fr}}
+@media (max-width:480px){.g4{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 6px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.ico{font-size:22px;margin-bottom:8px}
+
+.gallery figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.gallery figcaption{padding:12px 16px;font-size:14px;color:var(--muted)}
+
+.price{display:flex;flex-direction:column}
+.price .tier{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--accent)}
+.price .amt{font-size:32px;font-weight:800;letter-spacing:-.03em;margin:4px 0 2px}
+.price .amt small{font-size:15px;color:var(--muted);font-weight:600}
+.price ul{list-style:none;padding:0;margin:14px 0 18px;font-size:15px}
+.price li{padding:6px 0;border-top:1px dashed var(--line)}
+.price li::before{content:"✓ ";color:var(--ok);font-weight:800}
+.price .btn{margin-top:auto;justify-content:center}
+.price.best{border:2px solid var(--accent)}
+.badge{align-self:flex-start;font-size:12px;font-weight:800;background:var(--accent);color:var(--accent-ink);padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.opts{margin-top:18px;font-size:15px;color:var(--muted)}
+.h3{font-size:20px;letter-spacing:-.02em;margin:40px 0 14px}
+.tier.ok{color:var(--ok)}
+.card .tier{font-size:24px;font-weight:800;margin-bottom:6px}
+.price .tier{font-size:13px;margin-bottom:0}
+.owned{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.chips{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.chips li{background:var(--accent-soft);color:var(--text);border-radius:999px;padding:5px 12px;font-size:14px}
+.opts b{color:var(--text)}
+
+.steps{counter-reset:s;display:grid;gap:12px;grid-template-columns:repeat(5,1fr)}
+@media (max-width:860px){.steps{grid-template-columns:1fr}}
+.steps li{list-style:none;counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.steps li::before{content:counter(s);display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:14px;margin-bottom:8px}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:14px}
+
+table.cmp{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;font-size:15px}
+.cmp th,.cmp td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left}
+.cmp th:not(:first-child),.cmp td:not(:first-child){text-align:center;width:90px}
+.cmp thead th{background:var(--surface-2)}
+@media (max-width:480px){.cmp th,.cmp td{padding:10px 8px;font-size:14px}.cmp th:not(:first-child),.cmp td:not(:first-child){width:52px}}
+.yes{color:var(--ok);font-weight:800}.no{color:var(--muted)}
+
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px}
+summary{font-weight:700;cursor:pointer}
+details p{color:var(--muted);margin:10px 0 0}
+.note{font-size:14px;color:var(--muted);background:var(--surface-2);border-radius:12px;padding:14px 16px;margin-top:18px}
+footer{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--muted);font-size:14px}
+footer .row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+.form{display:grid;gap:16px}
+.form label{display:block;font-size:14px;font-weight:600}
+.form label>input,.form label>select,.form label>textarea{display:block;margin-top:6px}
+.form input:not([type=radio]):not([type=checkbox]),.form select,.form textarea{width:100%;font:inherit;font-weight:400;font-size:15px;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.form textarea{resize:vertical}
+.form input:focus,.form select:focus,.form textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.form fieldset{border:1px solid var(--line);border-radius:12px;padding:10px 14px 12px;margin:0;display:grid;gap:4px}
+.form legend{font-size:14px;font-weight:700;padding:0 6px}
+.form .pick{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:15px;padding:4px 0}
+.form .pick input{margin-top:5px;accent-color:var(--accent)}
+.form .pick small{color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:640px){.row2{grid-template-columns:1fr}}
+.warn{margin:0;font-size:14px;color:var(--warn)}
+.hp{position:absolute;left:-9999px;opacity:0;width:1px;height:1px}
+.policy p{margin:0 0 8px;font-size:14px;color:var(--muted)}
+.policy b{color:var(--text)}
+.sendmsg.ok{color:var(--ok)}
+.bizd{margin-top:14px;font-size:12px}
+.bizd summary{cursor:pointer;color:var(--muted);width:max-content}
+.biz{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.estimate{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;background:var(--surface-2);border-radius:12px;padding:14px 16px}
+.estimate b{font-size:28px;letter-spacing:-.02em}
+.estimate small{color:var(--muted)}
+#orderOut{display:grid;gap:10px}
+#orderOut[hidden]{display:none}
+#orderText{font-family:ui-monospace,Consolas,monospace;font-size:13px}
+button.btn{cursor:pointer;font:inherit;font-weight:700;border:1px solid transparent}
+[data-ja]{display:none}
+html[lang="ja"] [data-ko]{display:none}
+html[lang="ja"] [data-ja]{display:revert}
+</style>
+</head>
+<body>
+<!-- ✏️ 링크는 여기 한 곳만 바꾸면 됩니다 -->
+<script>
+// 비워 둔("") 링크는 사이트에서 버튼이 자동으로 숨겨집니다
+window.LINKS = {
+  openchat: "",  // 카카오톡 오픈채팅(1:1) URL  예) https://open.kakao.com/o/xxxx
+  discord: "",   // 디스코드 초대 링크 또는 프로필 URL
+  booth: "",     // Booth 상품 URL
+  x: "",         // X(트위터) 계정 URL
+  mail: ""       // 문의 메일  예) mailto:hello@example.com
+};
+// 전자상거래법 사업자 정보 표시 (통신판매업자 필수). 비워 둔 항목은 표시되지 않습니다
+window.BIZ = {
+  brand: "Closet Kit", // 서비스명
+  name: "스타라이트 TCG", // 상호 (등록 상호)
+  ceo: "정환동",  // 대표자
+  regNo: "413-05-66203", // 사업자등록번호
+  mailOrderNo: "", // 통신판매업 신고번호  예) 제2026-서울강남-0000호
+  address: "",   // 사업장 주소
+  phone: "",     // 전화번호
+  email: ""      // 이메일
+};
+// 사이트 문의/신청서 → 판매자 이메일로 전달 (Web3Forms 무료). 이메일 주소는 사이트에 노출되지 않습니다
+// web3forms.com 에서 받을 이메일을 입력하면 Access Key 가 메일로 옵니다 → 여기에 붙여넣기
+window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
+</script>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><i></i>Closet Kit</a>
+    <nav class="links">
+      <a href="#works"><span data-ko>작례</span><span data-ja>作例</span></a>
+      <a href="#pricing"><span data-ko>가격</span><span data-ja>料金</span></a>
+      <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a>
+      <a href="#tool"><span data-ko>무료 툴</span><span data-ja>無料ツール</span></a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact"><span data-ko>문의</span><span data-ja>お問い合わせ</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="language">
+      <button type="button" data-lang="ko" aria-pressed="true">KO</button>
+      <button type="button" data-lang="ja" aria-pressed="false">JA</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">VRChat · Modular Avatar</span>
+      <h1 data-ko>산 옷,<br>입혀 드립니다.</h1>
+      <h1 data-ja>買った衣装、<br>着せます。</h1>
+      <p class="lead" data-ko>BOOTH에서 산 옷과 헤어를 아바타에 입히고, 메뉴에서 바로 갈아입을 수 있게 세팅해 드립니다. 업로드 용량 한도까지 확인해서 드려요.</p>
+      <p class="lead" data-ja>BOOTHで買った衣装・髪型をアバターに着せて、メニューからすぐ着替えられるようにセットアップします。アップロード容量の上限までチェックしてお渡しします。</p>
+      <div class="cta">
+        <a class="btn primary" href="#order"><span data-ko>신청서 쓰기</span><span data-ja>依頼フォーム</span> →</a>
+        <a class="btn ghost" href="#tool"><span data-ko>무료 툴 받기</span><span data-ja>無料ツール</span></a>
+      </div>
+      <div class="trust" data-ko><span>15,000원부터</span><span>비밀번호 받지 않음</span><span>원본 그대로 (비파괴)</span><span>상호구매 원칙</span></div>
+      <div class="trust" data-ja><span>15,000ウォン〜</span><span>パスワード不要</span><span>非破壊</span><span>相互購入が原則</span></div>
+    </div>
+    <div class="hero-img"><img src="assets/hero.jpg" alt="여러 벌의 옷을 메뉴로 전환하는 VRChat 아바타 작례" width="1200" height="600"></div>
+  </section>
+
+  <section id="problems">
+    <h2 data-ko>이런 문제, 해결해 드립니다</h2>
+    <h2 data-ja>こんなお悩み、解決します</h2>
+    <p class="sub" data-ko>옷을 여러 벌 넣을 때 실제로 자주 생기는 문제들입니다.</p>
+    <p class="sub" data-ja>衣装を何着も入れるとよく起きる問題です。</p>
+    <div class="grid g4">
+      <div class="card"><div class="ico">🩷</div><h3 data-ko>옷이 분홍색</h3><h3 data-ja>衣装がピンク</h3><p data-ko>셰이더나 머티리얼 패키지가 빠진 경우입니다. 필요한 패키지를 찾아 넣어 드립니다.</p><p data-ja>シェーダー/マテリアル不足。必要なパッケージを特定して導入します。</p></div>
+      <div class="card"><div class="ico">😇</div><h3 data-ko>소품이 안 꺼져요</h3><h3 data-ja>小物が消えない</h3><p data-ko>헤일로, 뿔처럼 Bone Proxy로 붙는 소품이 다른 옷을 골라도 계속 보이는 문제를 고칩니다.</p><p data-ja>Bone Proxy の小物が他の衣装でも見える問題を修正。</p></div>
+      <div class="card"><div class="ico">📦</div><h3 data-ko>용량 초과</h3><h3 data-ja>容量オーバー</h3><p data-ko>비압축 500MB / 다운로드 200MB 한도. 실제로 재 보고 줄이거나 아바타를 나눠 드립니다.</p><p data-ja>非圧縮500MB / DL200MB。実測して削減・分割します。</p></div>
+      <div class="card"><div class="ico">🧩</div><h3 data-ko>메뉴가 엉켜요</h3><h3 data-ja>メニューが混乱</h3><p data-ko>옷과 헤어를 라디오 메뉴로 묶어 파라미터 하나로 전환되게 정리합니다.</p><p data-ja>ラジオ式メニューにまとめ、パラメータ1つで切替。</p></div>
+    </div>
+  </section>
+
+  <section id="works">
+    <h2 data-ko>작례</h2><h2 data-ja>作例</h2>
+    <p class="sub" data-ko>모두 Unity에서 실제로 업로드할 때와 같은 처리(NDMF 빌드)를 거친 렌더입니다.</p>
+    <p class="sub" data-ja>すべてアップロードと同じ処理（NDMFビルド）後のレンダーです。</p>
+    <div class="grid g2 gallery">
+      <figure><img src="assets/works-outfits.jpg" alt="옷 전환 작례" loading="lazy"><figcaption data-ko>한 아바타에 옷 13벌 → 용량 때문에 아바타 2개로 나눔 (A 421MB / B 449MB)</figcaption><figcaption data-ja>13着を1体に → 容量のため2体に分割</figcaption></figure>
+      <figure><img src="assets/works-closet.jpg" alt="옷장 메뉴 전환 결과" loading="lazy"><figcaption data-ko>Closet Kit로 만든 옷장: 옷 4벌 + 헤어 2종. 옷이 뚫리는 셰이프키 문제 3건을 자동으로 감지해서 수정</figcaption><figcaption data-ja>Closet Kit で作成：4着＋髪型2種。貫通するシェイプキー問題3件を自動検出して修正</figcaption></figure>
+      <figure><img src="assets/works-hair.jpg" alt="헤어 전환 작례" loading="lazy"><figcaption data-ko>헤어 3종 전환 + 투톤 컬러 커스텀</figcaption><figcaption data-ja>髪型3種の切替＋ツートーンカラー</figcaption></figure>
+      <figure><img src="assets/works-face.jpg" alt="얼굴 셰이프키 커스텀 전후" loading="lazy"><figcaption data-ko>얼굴 셰이프키 커스텀 전/후 (표정 애니메이션과 충돌 없는 키만 사용)</figcaption><figcaption data-ja>顔シェイプキーのカスタム（表情と競合しないキーのみ）</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2 data-ko>가격</h2><h2 data-ja>料金</h2>
+    <p class="sub" data-ko>보유 목록 안의 아바타·의상이면 <b>작업비만</b> 받습니다. 주문 전에 아바타 이름과 옷 링크를 보내 주시면 견적을 먼저 드립니다.</p>
+    <p class="sub" data-ja>所持リスト内のアバター・衣装なら<b>作業費のみ</b>。ご依頼前にアバター名と衣装リンクを送っていただければ先にお見積りします。</p>
+    <div class="grid g3">
+      <div class="card price">
+        <div class="tier">STANDARD</div>
+        <div class="amt">15,000<small data-ko>원</small><small data-ja>ウォン</small></div>
+        <ul data-ko><li>대응 의상 1벌 착용</li><li>용량 리포트</li><li>1일 · 수정 1회</li></ul>
+        <ul data-ja><li>対応衣装1着</li><li>容量レポート</li><li>1日・修正1回</li></ul>
+        <a class="btn ghost" href="#order"><span data-ko>신청하기</span><span data-ja>依頼する</span></a>
+      </div>
+      <div class="card price best">
+        <span class="badge" data-ko>추천</span><span class="badge" data-ja>おすすめ</span>
+        <div class="tier">DELUXE</div>
+        <div class="amt">39,000<small data-ko>원</small><small data-ja>ウォン</small></div>
+        <ul data-ko><li>의상·헤어 최대 5개</li><li>옷장 메뉴 (라디오 전환)</li><li>용량 리포트</li><li>2일 · 수정 2회</li></ul>
+        <ul data-ja><li>衣装・髪型 最大5点</li><li>着せ替えメニュー</li><li>容量レポート</li><li>2日・修正2回</li></ul>
+        <a class="btn primary" href="#order"><span data-ko>신청하기</span><span data-ja>依頼する</span></a>
+      </div>
+      <div class="card price">
+        <div class="tier">PREMIUM</div>
+        <div class="amt">69,000<small data-ko>원</small><small data-ja>ウォン</small></div>
+        <ul data-ko><li>최대 10개 + 옷장 메뉴</li><li>용량 최적화 (텍스처·분할)</li><li>체형·얼굴 셰이프키 조정</li><li>3일 · 수정 3회</li></ul>
+        <ul data-ja><li>最大10点＋メニュー</li><li>容量最適化</li><li>体型・顔シェイプキー調整</li><li>3日・修正3回</li></ul>
+        <a class="btn ghost" href="#order"><span data-ko>신청하기</span><span data-ja>依頼する</span></a>
+      </div>
+    </div>
+    <p class="opts" data-ko><b>옵션</b> · 1개 추가 +5,000원 · 아바타 2개로 나누기 +10,000원 · 비대응 의상 피팅 +30,000원부터 (사전 검토 후 가능할 때만) · 24시간 작업 +10,000원<br><small>모든 가격은 부가세 포함입니다.</small></p>
+    <p class="opts" data-ja><b>オプション</b> · 1点追加 +5,000ウォン · アバター分割 +10,000 · 非対応衣装フィッティング +30,000〜（事前確認後） · 24時間対応 +10,000<br><small>価格は韓国の付加価値税込みです。</small></p>
+
+    <h3 class="h3" data-ko>상호구매 — 작업자 보유 목록 기준</h3>
+    <h3 class="h3" data-ja>相互購入 — 作業者の所持リスト基準</h3>
+    <div class="grid g3">
+      <div class="card"><div class="tier ok">0<small data-ko>원</small><small data-ja>ウォン</small></div><h3 data-ko>작업자가 보유한 아바타·의상</h3><h3 data-ja>作業者が所持済みのアバター・衣装</h3><p data-ko>아래 목록에 있으면 추가 비용이 없습니다.</p><p data-ja>下のリストにあれば追加費用なし。</p></div>
+      <div class="card"><div class="tier"><span data-ko>준비 중</span><span data-ja>準備中</span></div><h3 data-ko>작업자가 보유하지 않은 것</h3><h3 data-ja>作業者が未所持のもの</h3><p data-ko>지금은 받지 않습니다. 원하시는 상품을 알려 주시면 목록에 추가될 때 연락드립니다.</p><p data-ja>現在は受付していません。ご希望の商品をお知らせいただければ、追加時にご連絡します。</p></div>
+      <div class="card"><div class="tier ok">0<small data-ko>원</small><small data-ja>ウォン</small></div><h3 data-ko>무료 배포 에셋</h3><h3 data-ja>無料配布素材</h3><p data-ko>양쪽 모두 BOOTH에서 받은 상태면 됩니다.</p><p data-ja>双方が BOOTH で入手済みであればOK。</p></div>
+    </div>
+    <div class="owned">
+      <b data-ko>보유 아바타 (에셋비 0원)</b><b data-ja>所持アバター（素材費0円）</b>
+      <ul class="chips"><li>Milltina ミルティナ</li><li>Shinano しなの</li><li>Chocolat ショコラ</li><li>Lapwing ラプウィング</li><li>Rurune ルルネ</li><li>Milk ミルク</li><li>Mishe ミシェ</li><li>Lasyusha ラシューシャ</li><li>Mamehinata まめひなた</li><li>Rue ルウ</li><li>Usasaki うささき</li><li>Minahoshi みなほし</li><li>MAYO まよ</li></ul>
+      <p class="opts" data-ko>의상·헤어 보유 여부는 문의 주시면 바로 확인해 드립니다. 보유 목록은 계속 늘려 갑니다.</p>
+      <p class="opts" data-ja>衣装・髪型の所持状況はお問い合わせください。リストは随時追加します。</p>
+    </div>
+  </section>
+
+  <section id="process">
+    <h2 data-ko>작업 과정</h2><h2 data-ja>流れ</h2>
+    <ol class="steps" data-ko>
+      <li><b>신청서</b><span>아래 양식 작성 → 오픈채팅/디스코드로 전송 + BOOTH 구매 내역 캡처</span></li>
+      <li><b>견적 확정</b><span>보유 여부 확인 후 최종 금액 안내</span></li>
+      <li><b>작업</b><span>작업자가 보유한 데이터로 세팅</span></li>
+      <li><b>미리보기 → 결제</b><span>앞/뒤 렌더 + 용량을 보고 마음에 들면 결제</span></li>
+      <li><b>납품</b><span>세팅 패키지 + 적용 가이드</span></li>
+    </ol>
+    <ol class="steps" data-ja>
+      <li><b>依頼フォーム</b><span>下のフォーム → Discord 等で送信＋BOOTH購入履歴</span></li>
+      <li><b>見積確定</b><span>所持確認後に金額をご案内</span></li>
+      <li><b>作業</b><span>作業者が所持するデータで作業</span></li>
+      <li><b>プレビュー → お支払い</b><span>レンダー＋容量を確認してからお支払い</span></li>
+      <li><b>納品</b><span>セットアップパッケージ＋ガイド</span></li>
+    </ol>
+    <div class="note" data-ko>⚖ <b>상호구매 원칙</b> — 의뢰하시는 분과 작업자 모두 해당 아바타·의상을 BOOTH에서 구매한 상태여야 합니다. 고객님의 원본 데이터는 받지 않고, 작업자가 직접 구매한 데이터로 작업합니다. 납품받은 세팅 패키지는 고객님이 구매한 원본(같은 버전)을 먼저 임포트한 프로젝트에 넣으시면 됩니다.<br>🔒 VRChat 계정 비밀번호는 절대 받지 않습니다. 업로드는 고객님이 직접 하시고, 방법은 스크린샷 가이드로 드립니다.</div>
+    <div class="note" data-ja>⚖ <b>相互購入が原則</b> — ご依頼者様と作業者の双方が BOOTH で該当アバター・衣装を購入済みである必要があります。お客様のデータは受け取らず、作業者が購入したデータで作業します。納品パッケージは、ご自身で購入した元データ（同じバージョン）をインポートしたプロジェクトに入れてください。<br>🔒 VRChatのパスワードは受け取りません。アップロードはご本人が行います。</div>
+  </section>
+
+  <section id="order">
+    <h2 data-ko>신청서</h2><h2 data-ja>依頼フォーム</h2>
+    <p class="sub" data-ko>작성하면 예상 금액이 바로 계산됩니다. <b>신청서 만들기 → 신청서 보내기</b>를 누르면 작업자에게 바로 전달되고, 적어 주신 연락처로 답장드립니다.</p>
+    <p class="sub" data-ja>入力すると概算が自動計算されます。<b>作成 → 送信</b>で作業者に届き、ご連絡先に返信します。</p>
+    <form id="orderForm" class="card form" autocomplete="off" onsubmit="return false">
+      <div class="row2">
+        <label><span data-ko>닉네임</span><span data-ja>お名前（ニックネーム）</span> *<input name="nick" required maxlength="40"></label>
+        <label><span data-ko>답장받을 이메일 (또는 디스코드 ID)</span><span data-ja>連絡先（Discord ID / メール）</span> *<input name="contact" required maxlength="80"></label>
+      </div>
+      <label><span data-ko>아바타</span><span data-ja>アバター</span> *
+        <select name="avatar" required>
+          <option value="">—</option>
+          <option>Milltina ミルティナ</option><option>Shinano しなの</option><option>Chocolat ショコラ</option><option>Lapwing ラプウィング</option><option>Rurune ルルネ</option><option>Milk ミルク</option><option>Mishe ミシェ</option><option>Lasyusha ラシューシャ</option><option>Mamehinata まめひなた</option><option>Rue ルウ</option><option>Usasaki うささき</option><option>Minahoshi みなほし</option><option>MAYO まよ</option>
+          <option value="other">기타 / その他</option>
+        </select>
+      </label>
+      <p class="warn" id="otherWarn" hidden><span data-ko>목록에 없는 아바타는 아직 접수하지 않습니다. 신청서를 보내 주시면 보유 목록에 추가될 때 먼저 연락드립니다.</span><span data-ja>リストにないアバターは現在受付していません。送っていただければ、追加時に優先してご連絡します。</span></p>
+      <label><span data-ko>입힐 옷·헤어 BOOTH 링크 (한 줄에 하나)</span><span data-ja>衣装・髪型の BOOTH リンク（1行に1つ）</span> *<textarea name="items" rows="4" required placeholder="https://booth.pm/ko/items/..."></textarea></label>
+      <fieldset>
+        <legend data-ko>패키지</legend><legend data-ja>プラン</legend>
+        <label class="pick"><input type="radio" name="plan" value="STANDARD" data-price="15000" data-limit="1"> STANDARD · 15,000 <small data-ko>(1개)</small><small data-ja>（1点）</small></label>
+        <label class="pick"><input type="radio" name="plan" value="DELUXE" data-price="39000" data-limit="5" checked> DELUXE · 39,000 <small data-ko>(5개 + 옷장 메뉴)</small><small data-ja>（5点＋メニュー）</small></label>
+        <label class="pick"><input type="radio" name="plan" value="PREMIUM" data-price="69000" data-limit="10"> PREMIUM · 69,000 <small data-ko>(10개 + 최적화 + 셰이프키)</small><small data-ja>（10点＋最適化＋シェイプキー）</small></label>
+      </fieldset>
+      <fieldset>
+        <legend data-ko>옵션</legend><legend data-ja>オプション</legend>
+        <label class="pick"><input type="checkbox" name="split" data-price="10000"> <span data-ko>아바타 2개로 나누기 +10,000</span><span data-ja>アバター分割 +10,000</span></label>
+        <label class="pick"><input type="checkbox" name="rush" data-price="10000"> <span data-ko>24시간 작업 +10,000</span><span data-ja>24時間対応 +10,000</span></label>
+        <label class="pick"><input type="checkbox" name="fit"> <span data-ko>비대응 의상 피팅 (+30,000부터, 검토 후 별도 견적)</span><span data-ja>非対応衣装フィッティング（+30,000〜・別途見積）</span></label>
+      </fieldset>
+      <label><span data-ko>요청사항 (기본으로 입을 옷, 메뉴 이름, 원하는 셰이프키 등)</span><span data-ja>ご要望（デフォルト衣装、メニュー名など）</span><textarea name="note" rows="3" maxlength="1000"></textarea></label>
+      <fieldset class="agree">
+        <label class="pick"><input type="checkbox" name="a1" required> <span data-ko>상호구매 원칙에 동의하며, 답장을 받으면 위 아바타·옷의 <b>BOOTH 구매 내역 캡처</b>를 보내겠습니다.</span><span data-ja>相互購入の原則に同意し、返信後に<b>BOOTH購入履歴のスクショ</b>を送ります。</span></label>
+        <label class="pick"><input type="checkbox" name="a2" required> <span data-ko>VRChat 비밀번호는 보내지 않으며, 업로드는 제가 직접 합니다.</span><span data-ja>パスワードは送らず、アップロードは自分で行います。</span></label>
+        <label class="pick"><input type="checkbox" name="a4" required> <span data-ko><a href="#privacy">개인정보 수집·이용</a>(닉네임·연락처·신청 내용, 견적과 작업 연락 목적)에 동의합니다.</span><span data-ja><a href="#privacy">個人情報の収集・利用</a>に同意します。</span></label>
+        <label class="pick"><input type="checkbox" name="a3" required> <span data-ko>아래 <a href="#terms">결제·취소·환불 규정</a>을 확인했습니다.</span><span data-ja>下の<a href="#terms">お支払い・キャンセル規定</a>を確認しました。</span></label>
+      </fieldset>
+      <div class="estimate">
+        <div><span data-ko>예상 금액</span><span data-ja>概算</span> <b id="estTotal">39,000</b><small data-ko>원</small><small data-ja>ウォン</small></div>
+        <small id="estDetail"></small>
+      </div>
+      <div class="cta">
+        <button type="button" class="btn primary" id="makeOrder"><span data-ko>신청서 만들기</span><span data-ja>フォームを作成</span></button>
+      </div>
+      <p class="warn" id="formErr" hidden></p>
+      <div id="orderOut" hidden>
+        <textarea id="orderText" rows="12" readonly></textarea>
+        <div class="cta">
+          <button type="button" class="btn primary" id="sendOrder" hidden><span data-ko>신청서 보내기</span><span data-ja>送信する</span></button>
+          <button type="button" class="btn ghost" id="copyOrder"><span data-ko>신청서 복사</span><span data-ja>コピー</span></button>
+          <a class="btn ghost" data-link="openchat" href="#"><span data-ko>오픈채팅 열기</span><span data-ja>オープンチャット</span></a>
+          <a class="btn ghost" data-link="discord" href="#">Discord</a>
+          <a class="btn ghost" id="mailOrder" href="#"><span data-ko>메일로 보내기</span><span data-ja>メールで送る</span></a>
+        </div>
+        <p class="warn no-channel" hidden><span data-ko>접수 채널(오픈채팅·디스코드)을 준비 중입니다. 곧 열립니다!</span><span data-ja>受付チャンネルは準備中です。</span></p>
+        <p class="opts sendmsg" id="orderSent" hidden></p>
+        <p class="opts" id="copied" hidden><span data-ko>복사됐습니다. 붙여넣고 구매 내역 캡처와 함께 보내 주세요.</span><span data-ja>コピーしました。貼り付けて購入履歴と一緒に送ってください。</span></p>
+      </div>
+    </form>
+  </section>
+
+  <section id="terms">
+    <h2 data-ko>결제 · 취소 · 환불</h2><h2 data-ja>お支払い・キャンセル</h2>
+    <div class="grid g3" data-ko>
+      <div class="card"><h3>결제는 미리보기 확인 후</h3><p>작업이 끝나면 워터마크가 들어간 앞/뒤 렌더와 용량 리포트를 먼저 보내 드립니다. 마음에 드시면 결제하시고, 결제가 확인되면 세팅 패키지를 드립니다.</p></div>
+      <div class="card"><h3>결제 방법</h3><p>국내: 계좌이체 · 토스 송금<br>해외: PayPal<br>입금 정보는 견적이 확정되면 1:1로 알려 드립니다 (사이트에 공개하지 않습니다).</p></div>
+      <div class="card"><h3>취소 · 환불</h3><p>결제 전에는 언제든 무료로 취소할 수 있습니다. 결제·납품 후에는 주문 제작 디지털 데이터라서 환불이 어렵습니다. 대신 납품물에 문제가 있으면 무상으로 고쳐 드립니다.</p></div>
+    </div>
+    <div class="grid g3" data-ja>
+      <div class="card"><h3>お支払いはプレビュー確認後</h3><p>作業後、透かし入りのレンダーと容量レポートを先にお送りします。ご納得いただけたらお支払い、確認後にパッケージをお渡しします。</p></div>
+      <div class="card"><h3>お支払い方法</h3><p>海外: PayPal<br>お支払い情報は見積確定後に個別にご案内します。</p></div>
+      <div class="card"><h3>キャンセル・返金</h3><p>お支払い前はいつでも無料でキャンセルできます。お支払い・納品後はオーダーメイドのデジタルデータのため返金できませんが、不具合は無償で修正します。</p></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 data-ko>문의</h2><h2 data-ja>お問い合わせ</h2>
+    <p class="sub" data-ko>견적 전 질문, 보유 여부 확인, 툴 문의 등 무엇이든 보내 주세요. 적어 주신 이메일로 답장드립니다.</p>
+    <p class="sub" data-ja>ご質問はこちらから。ご入力のメールに返信します。</p>
+    <form id="contactForm" class="card form" autocomplete="off" onsubmit="return false">
+      <div class="row2">
+        <label><span data-ko>이름(닉네임)</span><span data-ja>お名前</span> *<input name="name" required maxlength="40"></label>
+        <label><span data-ko>답장받을 이메일</span><span data-ja>返信先メール</span> *<input name="email" type="email" required maxlength="120"></label>
+      </div>
+      <label><span data-ko>내용</span><span data-ja>内容</span> *<textarea name="message" rows="5" required maxlength="3000"></textarea></label>
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="pick"><input type="checkbox" name="agree" required> <span data-ko><a href="#privacy">개인정보 수집·이용</a>(이름·이메일·문의 내용, 답변 목적)에 동의합니다.</span><span data-ja><a href="#privacy">個人情報の収集・利用</a>に同意します。</span></label>
+      <div class="cta"><button type="button" class="btn primary" id="sendContact"><span data-ko>문의 보내기</span><span data-ja>送信</span></button></div>
+      <p class="opts sendmsg" id="contactSent" hidden></p>
+    </form>
+  </section>
+
+  <section id="privacy">
+    <h2 data-ko>개인정보 처리방침</h2><h2 data-ja>個人情報の取り扱い</h2>
+    <div class="card policy" data-ko>
+      <p><b>수집 항목</b> 이름(닉네임), 이메일 또는 디스코드 ID, 신청·문의 내용, (결제 시) 입금자명</p>
+      <p><b>목적</b> 견적 안내, 작업 진행 연락, 대금 확인, 문의 답변</p>
+      <p><b>보관 기간</b> 문의만 한 경우 답변 후 3개월 안에 삭제합니다. 거래가 이뤄진 경우 전자상거래법에 따라 계약·대금결제 기록은 5년, 소비자 불만·분쟁 기록은 3년 보관한 뒤 삭제합니다</p>
+      <p><b>처리 위탁</b> 사이트 신청서·문의 내용은 메일 전송 서비스(Web3Forms)를 거쳐 판매자 이메일로 전달됩니다. 사이트 자체에는 저장되지 않습니다</p>
+      <p><b>권리</b> 언제든 열람·정정·삭제를 요청할 수 있습니다 (위 문의 양식 이용)</p>
+      <p><b>개인정보 보호책임자</b> 정환동 (스타라이트 TCG)</p>
+    </div>
+    <div class="card policy" data-ja>
+      <p>収集項目：お名前、メールまたは Discord ID、ご依頼・お問い合わせ内容。目的：見積・作業連絡・お支払い確認・回答。お問い合わせのみの場合は回答後3か月以内に削除し、取引記録は法令に基づき保管します。フォーム内容はメール送信サービス（Web3Forms）を通じて販売者に届き、サイトには保存されません。削除のご依頼はお問い合わせフォームから。</p>
+    </div>
+  </section>
+
+  <section id="tool">
+    <h2>Closet Kit <span data-ko>— 직접 하실 분께</span><span data-ja>— 自分でやりたい方へ</span></h2>
+    <p class="sub" data-ko>제가 대행 작업에 쓰는 Unity 툴을 그대로 배포합니다. 옷과 헤어를 한꺼번에 끌어다 놓고 클릭 한 번이면 옷장 메뉴가 만들어집니다.</p>
+    <p class="sub" data-ja>代行作業で使っている Unity ツールをそのまま配布しています。衣装・髪型をまとめてドロップ → ワンクリックで着せ替えメニュー。</p>
+    <table class="cmp">
+      <thead><tr><th></th><th>Lite<br><small data-ko>무료</small><small data-ja>無料</small></th><th>Pro<br><small>¥800</small></th></tr></thead>
+      <tbody>
+        <tr><td data-ko>여러 벌 한꺼번에 → 라디오 옷장 메뉴</td><td data-ja>複数衣装 → ラジオ式メニュー</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td data-ko>MA Setup Outfit 자동 실행 / 깨진 참조 자동 수정</td><td data-ja>Setup Outfit 自動 / 参照パス修正</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td data-ko>옷 뚫림 자동 감지 (바디 셰이프키 호환) + 옷별 셰이프키 설정</td><td data-ja>貫通の自動検出（素体シェイプキー互換）＋衣装ごとのシェイプキー</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td data-ko>Bone Proxy 소품 꺼짐 문제 수정</td><td data-ja>Bone Proxy 小物の表示問題を修正</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td data-ko>기믹 메뉴 정리, 분홍 머티리얼 경고</td><td data-ja>ギミックメニュー整理・ピンク警告</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        <tr><td data-ko>옷별 용량·폴리곤·PhysBone 표</td><td data-ja>衣装ごとの容量・ポリゴン・PhysBone</td><td class="no">—</td><td class="yes">✓</td></tr>
+        <tr><td data-ko>실제 업로드 용량 측정 (NDMF 빌드)</td><td data-ja>実アップロード容量の測定</td><td class="no">—</td><td class="yes">✓</td></tr>
+        <tr><td data-ko>옷 텍스처 해상도 일괄 축소</td><td data-ja>衣装テクスチャ一括縮小</td><td class="no">—</td><td class="yes">✓</td></tr>
+      </tbody>
+    </table>
+    <div class="cta" style="margin-top:18px">
+      <a class="btn primary" data-link="booth" href="#"><span data-ko>Booth에서 받기</span><span data-ja>BOOTHで入手</span> →</a>
+    </div>
+    <p class="opts" data-ko>필요 환경: Unity 2022.3 · VRChat SDK 3.7+ · Modular Avatar 1.10+ · UI 한국어/日本語/English</p>
+    <p class="opts" data-ja>動作環境: Unity 2022.3 · VRChat SDK 3.7+ · Modular Avatar 1.10+ · UI 日本語/한국어/English</p>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ</h2>
+    <div data-ko>
+      <details><summary>왜 상호구매가 필요한가요?</summary><p>대부분의 BOOTH 아바타·의상 약관은 구매자 본인만 데이터를 쓸 수 있습니다. 그래서 서로 데이터를 주고받지 않고, 각자 정식으로 구매한 데이터를 씁니다.</p></details>
+      <details><summary>작업자가 없는 아바타·의상은 안 되나요?</summary><p>상호구매 원칙 때문에 작업자도 정식으로 구매해야 작업할 수 있습니다. 지금은 보유 목록에 있는 상품만 받고, 목록은 계속 늘려 가고 있습니다. 원하시는 상품을 알려 주시면 추가될 때 연락드립니다.</p></details>
+      <details><summary>제 계정으로 업로드까지 해 주시나요?</summary><p>계정 보안 때문에 직접 업로드는 하지 않습니다. VCC로 프로젝트 열기 → SDK 로그인 → Build &amp; Publish 순서를 스크린샷 가이드로 드리고, 원하시면 디스코드 화면공유로 같이 진행해 드립니다.</p></details>
+      <details><summary>원본이 망가지지 않나요?</summary><p>Modular Avatar 비파괴 방식이라 원본 프리팹은 그대로입니다. 옷을 빼고 싶으면 오브젝트만 지우면 됩니다.</p></details>
+      <details><summary>어떤 아바타가 되나요?</summary><p>VRChat SDK3 아바타라면 대부분 됩니다. 가장 중요한 건 옷이 그 아바타에 "대응"되는지입니다. 주문 전에 링크를 보내 주시면 확인해 드립니다.</p></details>
+      <details><summary>다른 아바타용 옷도 입힐 수 있나요?</summary><p>비대응 의상 피팅 옵션으로 가능한 경우가 있습니다. 옷 구조에 따라 결과가 달라서, 파일을 먼저 보고 가능할 때만 진행합니다. 결과가 만족스럽지 않으면 옵션 금액을 환불해 드립니다.</p></details>
+    </div>
+    <div data-ja>
+      <details><summary>なぜ相互購入が必要ですか？</summary><p>多くの BOOTH アバター・衣装の規約では、購入者本人のみがデータを使用できます。データの受け渡しをせず、それぞれが正規に購入したデータを使います。</p></details>
+      <details><summary>作業者が持っていない商品は？</summary><p>相互購入の原則により、現在は所持リストの商品のみ受け付けています。リストは随時追加します。</p></details>
+      <details><summary>アップロードまでしてもらえますか？</summary><p>アカウント保護のため代理アップロードは行いません。手順をスクリーンショット付きでご案内し、ご希望があれば Discord の画面共有で一緒に進めます。</p></details>
+      <details><summary>元データは壊れませんか？</summary><p>Modular Avatar の非破壊方式なので元のプレハブはそのままです。</p></details>
+      <details><summary>どのアバターに対応していますか？</summary><p>VRChat SDK3 アバターならほぼ対応します。衣装がそのアバターに対応しているかが重要なので、事前にリンクをお送りください。</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <div>© <span id="y"></span> Closet Kit</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a><a data-link="openchat" href="#"><span data-ko>오픈채팅</span><span data-ja>オープンチャット</span></a><a data-link="discord" href="#">Discord</a><a data-link="booth" href="#">BOOTH</a><a data-link="x" href="#">X</a><a data-link="mail" href="#"><span data-ko>메일 문의</span><span data-ja>メール</span></a>
+    </div>
+  </div>
+  <div class="wrap"><details class="bizd" id="bizd" hidden><summary>사업자 정보</summary><div class="biz" id="biz"></div></details></div>
+  <div class="wrap" style="margin-top:12px;font-size:12px" data-ko>작례 이미지의 아바타·의상 저작권은 각 제작자에게 있습니다. (DOLOSart Milltina, Velvet Sky, LINGOCIDER, MINUEL, EXTENSION CLOTHING, Li-ne, Elychiffon 외)</div>
+  <div class="wrap" style="margin-top:12px;font-size:12px" data-ja>作例画像のアバター・衣装の著作権は各制作者に帰属します。</div>
+</footer>
+
+<script>
+(function(){
+  document.querySelectorAll('[data-link]').forEach(function(a){
+    var u = window.LINKS[a.getAttribute('data-link')];
+    if (u) { a.href = u; if (u.indexOf('http') === 0) { a.target = '_blank'; a.rel = 'noopener'; } }
+    else a.style.display = 'none';
+  });
+  document.getElementById('y').textContent = new Date().getFullYear();
+  var B = window.BIZ || {}, rows = [['상호', B.name], ['대표', B.ceo], ['사업자등록번호', B.regNo], ['통신판매업 신고', B.mailOrderNo], ['주소', B.address], ['전화', B.phone], ['이메일', B.email]].filter(function(r){ return r[1]; });
+  var biz = document.getElementById('biz');
+  // 상호 등 사업자 정보는 접힌 '사업자 정보' 안에만 표시 (서비스명은 푸터의 Closet Kit)
+  rows.forEach(function(r){ var sp = document.createElement('span'); sp.textContent = r[0] + ' ' + r[1]; biz.appendChild(sp); });
+  if (rows.length) document.getElementById('bizd').hidden = false;
+  if (B.regNo && B.mailOrderNo) {
+    var a = document.createElement('a');
+    a.href = 'https://www.ftc.go.kr/bizCommPop.do?wrkr_no=' + B.regNo.replace(/\D/g, '');
+    a.target = '_blank'; a.rel = 'noopener'; a.textContent = '사업자정보 확인';
+    biz.appendChild(a);
+  }
+  // 신청서를 보낼 채널이 하나도 없으면 안내
+  var L = window.LINKS || {};
+  if (!window.FORM_KEY && !L.openchat && !L.discord && !L.mail) document.querySelectorAll('.no-channel').forEach(function(e){ e.hidden = false; });
+  function setLang(l){
+    document.documentElement.lang = l;
+    document.querySelectorAll('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
+    try { localStorage.setItem('ck-lang', l); } catch(e) {}
+  }
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', function(){ setLang(b.dataset.lang); }); });
+  var saved = null;
+  try { saved = localStorage.getItem('ck-lang'); } catch(e) {}
+  setLang(saved || ((navigator.language || '').indexOf('ja') === 0 ? 'ja' : 'ko'));
+})();
+
+// Web3Forms 전송 (공통)
+window.ckSend = function(data, msgEl, btn){
+  var ja = document.documentElement.lang === 'ja';
+  msgEl.hidden = false; msgEl.className = 'opts sendmsg'; msgEl.textContent = ja ? '送信中…' : '보내는 중…';
+  var body = { access_key: window.FORM_KEY, subject: data.subject, from_name: data.from_name, message: data.message, botcheck: '' };
+  if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.contact || '')) body.replyto = data.contact;
+  else if (data.contact) body.contact = data.contact;
+  fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if (!j.success) throw new Error(j.message || 'fail');
+      msgEl.className = 'opts sendmsg ok';
+      msgEl.textContent = ja ? '送信しました。ご連絡先に返信します。' : '전송됐습니다! 적어 주신 연락처로 답장드릴게요.';
+    })
+    .catch(function(){
+      msgEl.className = 'warn sendmsg';
+      msgEl.textContent = ja ? '送信に失敗しました。時間をおいて再度お試しください。' : '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.';
+      if (btn) btn.disabled = false;
+    });
+};
+(function(){
+  var c = document.getElementById('contactForm');
+  if (!c) return;
+  if (!window.FORM_KEY) {
+    document.getElementById('contact').style.display = 'none';
+    document.querySelectorAll('a[href="#contact"]').forEach(function(a){ a.style.display = 'none'; });
+    return;
+  }
+  document.getElementById('sendContact').addEventListener('click', function(){
+    if (!c.checkValidity()) { c.reportValidity(); return; }
+    if (c.botcheck.checked) return;
+    this.disabled = true;
+    window.ckSend({ subject: '[Closet Kit 문의] ' + c.name.value.trim(), from_name: c.name.value.trim(), contact: c.email.value.trim(), message: c.message.value.trim() }, document.getElementById('contactSent'), this);
+  });
+})();
+// 신청서: 서버 없이 브라우저 안에서만 견적 계산 + 신청서 텍스트 생성 (아무것도 저장/전송하지 않음)
+(function(){
+  var f = document.getElementById('orderForm');
+  if (!f) return;
+  var won = function(n){ return n.toLocaleString('ko-KR'); };
+  var ja = function(){ return document.documentElement.lang === 'ja'; };
+  function lines(){ return f.items.value.split('\n').map(function(x){ return x.trim(); }).filter(Boolean); }
+  function calc(){
+    var plan = f.querySelector('input[name=plan]:checked');
+    var base = +plan.dataset.price, limit = +plan.dataset.limit;
+    var n = lines().length, extra = Math.max(0, n - limit);
+    var total = base + extra * 5000, parts = [plan.value + ' ' + won(base)];
+    if (extra) parts.push((ja() ? '追加 ' : '추가 ') + extra + ' × 5,000');
+    ['split','rush'].forEach(function(k){ if (f[k].checked) { total += +f[k].dataset.price; parts.push((k === 'split' ? (ja() ? '分割' : '분리') : '24h') + ' ' + won(+f[k].dataset.price)); } });
+    if (f.fit.checked) parts.push(ja() ? 'フィッティング別途' : '피팅 별도 견적');
+    document.getElementById('estTotal').textContent = won(total) + (f.fit.checked ? '+' : '');
+    document.getElementById('estDetail').textContent = parts.join(' · ') + (n ? '' : (ja() ? '（リンク未入力）' : ' (링크를 입력하면 개수가 반영됩니다)'));
+    document.getElementById('otherWarn').hidden = f.avatar.value !== 'other';
+    return { plan: plan.value, total: total, n: n, extra: extra };
+  }
+  f.addEventListener('input', calc);
+  f.addEventListener('change', calc);
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', calc); });
+  calc();
+
+  document.getElementById('makeOrder').addEventListener('click', function(){
+    var err = document.getElementById('formErr');
+    if (!f.checkValidity()) {
+      err.hidden = false;
+      err.textContent = ja() ? '必須項目と同意欄をご確認ください。' : '필수 항목(*)과 동의 체크를 확인해 주세요.';
+      f.reportValidity();
+      return;
+    }
+    err.hidden = true;
+    var e = calc();
+    var opts = [];
+    if (f.split.checked) opts.push('아바타 분리');
+    if (f.rush.checked) opts.push('24시간');
+    if (f.fit.checked) opts.push('비대응 피팅(견적 요청)');
+    var txt = [
+      '[Closet Kit 신청서]',
+      '닉네임: ' + f.nick.value.trim(),
+      '연락처: ' + f.contact.value.trim(),
+      '아바타: ' + (f.avatar.value === 'other' ? '기타 (보유 목록 외 — 추가 시 연락 요청)' : f.avatar.value),
+      '패키지: ' + e.plan + ' / 항목 ' + e.n + '개' + (e.extra ? ' (추가 ' + e.extra + '개)' : ''),
+      '옵션: ' + (opts.length ? opts.join(', ') : '없음'),
+      '예상 금액: ' + won(e.total) + '원' + (f.fit.checked ? ' + 피팅 별도' : '') + ' (최종 금액은 견적 확정 시 안내)',
+      '',
+      '[옷·헤어 링크]'
+    ].concat(lines(), ['', '[요청사항]', f.note.value.trim() || '-', '', '동의: 상호구매(구매 내역 캡처 첨부) / 비밀번호 미제공 / 결제·환불 규정 확인']).join('\n');
+    document.getElementById('orderText').value = txt;
+    document.getElementById('orderOut').hidden = false;
+    var mail = (window.LINKS && window.LINKS.mail) || '';
+    document.getElementById('mailOrder').style.display = mail ? '' : 'none';
+    document.getElementById('mailOrder').href = mail ? mail + '?subject=' + encodeURIComponent('[Closet Kit 신청] ' + f.nick.value.trim()) + '&body=' + encodeURIComponent(txt) : '#';
+    document.getElementById('orderText').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  document.getElementById('sendOrder').hidden = !window.FORM_KEY;
+  document.getElementById('sendOrder').addEventListener('click', function(){
+    var btn = this;
+    btn.disabled = true;
+    window.ckSend({ subject: '[Closet Kit 신청] ' + f.nick.value.trim(), from_name: f.nick.value.trim(), contact: f.contact.value.trim(), message: document.getElementById('orderText').value },
+      document.getElementById('orderSent'), btn);
+  });
+
+  document.getElementById('copyOrder').addEventListener('click', function(){
+    var t = document.getElementById('orderText');
+    var done = function(){ document.getElementById('copied').hidden = false; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t.value).then(done, function(){ t.select(); document.execCommand('copy'); done(); });
+    else { t.select(); document.execCommand('copy'); done(); }
+  });
+})();
+
+</script>
+</body>
+</html>
