@@ -132,8 +132,10 @@ footer .row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
 .policy p{margin:0 0 8px;font-size:14px;color:var(--muted)}
 .policy b{color:var(--text)}
 .sendmsg.ok{color:var(--ok)}
-.bizd{margin-top:14px;font-size:12px}
-.bizd summary{cursor:pointer;color:var(--muted);width:max-content}
+.bizd{margin-top:28px;font-size:10px;opacity:.45}
+.bizd[open]{opacity:.8}
+.bizd summary{cursor:pointer;color:var(--muted);width:max-content;list-style:none;font-style:italic}
+.bizd summary::-webkit-details-marker{display:none}
 .biz{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 14px}
 .estimate{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;background:var(--surface-2);border-radius:12px;padding:14px 16px}
 .estimate b{font-size:28px;letter-spacing:-.02em}
@@ -433,9 +435,9 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
       <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a><a data-link="openchat" href="#"><span data-ko>오픈채팅</span><span data-ja>オープンチャット</span></a><a data-link="discord" href="#">Discord</a><a data-link="x" href="#">X</a><a data-link="mail" href="#"><span data-ko>메일 문의</span><span data-ja>メール</span></a>
     </div>
   </div>
-  <div class="wrap"><details class="bizd" id="bizd" hidden><summary>사업자 정보</summary><div class="biz" id="biz"></div></details></div>
   <div class="wrap" style="margin-top:12px;font-size:12px" data-ko>작례 이미지의 아바타·의상 저작권은 각 제작자에게 있습니다. (DOLOSart Milltina, Velvet Sky, LINGOCIDER, MINUEL, EXTENSION CLOTHING, Li-ne, Elychiffon 외)</div>
   <div class="wrap" style="margin-top:12px;font-size:12px" data-ja>作例画像のアバター・衣装の著作権は各制作者に帰属します。</div>
+  <div class="wrap"><details class="bizd" id="bizd" hidden><summary>i</summary><div class="biz" id="biz"></div></details></div>
 </footer>
 
 <script>
