@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Closet Kit — VRChat 옷 입히기 · 옷장 세팅</title>
-<meta name="description" content="BOOTH에서 산 옷·헤어를 입히고, 메뉴에서 바로 갈아입을 수 있게 세팅해 드립니다. 미리보기 확인 후 결제. 무료 Unity 툴 Closet Kit 배포 중.">
+<meta name="description" content="BOOTH에서 산 옷·헤어를 입히고, 메뉴에서 바로 갈아입을 수 있게 세팅해 드립니다. 미리보기 확인 후 결제, 상호구매 원칙.">
 <meta property="og:title" content="Closet Kit — VRChat 옷 입히기 · 옷장 세팅">
 <meta property="og:description" content="산 옷, 입혀 드립니다. 여러 벌 옷장 메뉴 + 업로드 용량 진단.">
 <meta property="og:image" content="assets/og.jpg">
@@ -154,7 +154,7 @@ html[lang="ja"] [data-ja]{display:revert}
 window.LINKS = {
   openchat: "",  // 카카오톡 오픈채팅(1:1) URL  예) https://open.kakao.com/o/xxxx
   discord: "",   // 디스코드 초대 링크 또는 프로필 URL
-  booth: "",     // Booth 상품 URL
+  booth: "",     // (사용 안 함 — 툴은 Booth 에서만 판매)
   x: "",         // X(트위터) 계정 URL
   mail: ""       // 문의 메일  예) mailto:hello@example.com
 };
@@ -181,7 +181,6 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
       <a href="#works"><span data-ko>작례</span><span data-ja>作例</span></a>
       <a href="#pricing"><span data-ko>가격</span><span data-ja>料金</span></a>
       <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a>
-      <a href="#tool"><span data-ko>무료 툴</span><span data-ja>無料ツール</span></a>
       <a href="#faq">FAQ</a>
       <a href="#contact"><span data-ko>문의</span><span data-ja>お問い合わせ</span></a>
     </nav>
@@ -202,7 +201,6 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
       <p class="lead" data-ja>BOOTHで買った衣装・髪型をアバターに着せて、メニューからすぐ着替えられるようにセットアップします。アップロード容量の上限までチェックしてお渡しします。</p>
       <div class="cta">
         <a class="btn primary" href="#order"><span data-ko>신청서 쓰기</span><span data-ja>依頼フォーム</span> →</a>
-        <a class="btn ghost" href="#tool"><span data-ko>무료 툴 받기</span><span data-ja>無料ツール</span></a>
       </div>
       <div class="trust" data-ko><span>15,000원부터</span><span>비밀번호 받지 않음</span><span>원본 그대로 (비파괴)</span><span>상호구매 원칙</span></div>
       <div class="trust" data-ja><span>15,000ウォン〜</span><span>パスワード不要</span><span>非破壊</span><span>相互購入が原則</span></div>
@@ -229,7 +227,7 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
     <p class="sub" data-ja>すべてアップロードと同じ処理（NDMFビルド）後のレンダーです。</p>
     <div class="grid g2 gallery">
       <figure><img src="assets/works-outfits.jpg" alt="옷 전환 작례" loading="lazy"><figcaption data-ko>한 아바타에 옷 13벌 → 용량 때문에 아바타 2개로 나눔 (A 421MB / B 449MB)</figcaption><figcaption data-ja>13着を1体に → 容量のため2体に分割</figcaption></figure>
-      <figure><img src="assets/works-closet.jpg" alt="옷장 메뉴 전환 결과" loading="lazy"><figcaption data-ko>Closet Kit로 만든 옷장: 옷 4벌 + 헤어 2종. 옷이 뚫리는 셰이프키 문제 3건을 자동으로 감지해서 수정</figcaption><figcaption data-ja>Closet Kit で作成：4着＋髪型2種。貫通するシェイプキー問題3件を自動検出して修正</figcaption></figure>
+      <figure><img src="assets/works-closet.jpg" alt="옷장 메뉴 전환 결과" loading="lazy"><figcaption data-ko>옷장 작례: 옷 4벌 + 헤어 2종. 옷이 뚫리는 셰이프키 문제 3건을 찾아서 수정</figcaption><figcaption data-ja>作例：4着＋髪型2種。貫通するシェイプキー問題3件を検出して修正</figcaption></figure>
       <figure><img src="assets/works-hair.jpg" alt="헤어 전환 작례" loading="lazy"><figcaption data-ko>헤어 3종 전환 + 투톤 컬러 커스텀</figcaption><figcaption data-ja>髪型3種の切替＋ツートーンカラー</figcaption></figure>
       <figure><img src="assets/works-face.jpg" alt="얼굴 셰이프키 커스텀 전후" loading="lazy"><figcaption data-ko>얼굴 셰이프키 커스텀 전/후 (표정 애니메이션과 충돌 없는 키만 사용)</figcaption><figcaption data-ja>顔シェイプキーのカスタム（表情と競合しないキーのみ）</figcaption></figure>
     </div>
@@ -378,7 +376,7 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
 
   <section id="contact">
     <h2 data-ko>문의</h2><h2 data-ja>お問い合わせ</h2>
-    <p class="sub" data-ko>견적 전 질문, 보유 여부 확인, 툴 문의 등 무엇이든 보내 주세요. 적어 주신 이메일로 답장드립니다.</p>
+    <p class="sub" data-ko>견적 전 질문, 보유 여부 확인 등 무엇이든 보내 주세요. 적어 주신 이메일로 답장드립니다.</p>
     <p class="sub" data-ja>ご質問はこちらから。ご入力のメールに返信します。</p>
     <form id="contactForm" class="card form" autocomplete="off" onsubmit="return false">
       <div class="row2">
@@ -408,30 +406,6 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
     </div>
   </section>
 
-  <section id="tool">
-    <h2>Closet Kit <span data-ko>— 직접 하실 분께</span><span data-ja>— 自分でやりたい方へ</span></h2>
-    <p class="sub" data-ko>제가 대행 작업에 쓰는 Unity 툴을 그대로 배포합니다. 옷과 헤어를 한꺼번에 끌어다 놓고 클릭 한 번이면 옷장 메뉴가 만들어집니다.</p>
-    <p class="sub" data-ja>代行作業で使っている Unity ツールをそのまま配布しています。衣装・髪型をまとめてドロップ → ワンクリックで着せ替えメニュー。</p>
-    <table class="cmp">
-      <thead><tr><th></th><th>Lite<br><small data-ko>무료</small><small data-ja>無料</small></th><th>Pro<br><small>¥800</small></th></tr></thead>
-      <tbody>
-        <tr><td data-ko>여러 벌 한꺼번에 → 라디오 옷장 메뉴</td><td data-ja>複数衣装 → ラジオ式メニュー</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td data-ko>MA Setup Outfit 자동 실행 / 깨진 참조 자동 수정</td><td data-ja>Setup Outfit 自動 / 参照パス修正</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td data-ko>옷 뚫림 자동 감지 (바디 셰이프키 호환) + 옷별 셰이프키 설정</td><td data-ja>貫通の自動検出（素体シェイプキー互換）＋衣装ごとのシェイプキー</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td data-ko>Bone Proxy 소품 꺼짐 문제 수정</td><td data-ja>Bone Proxy 小物の表示問題を修正</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td data-ko>기믹 메뉴 정리, 분홍 머티리얼 경고</td><td data-ja>ギミックメニュー整理・ピンク警告</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-        <tr><td data-ko>옷별 용량·폴리곤·PhysBone 표</td><td data-ja>衣装ごとの容量・ポリゴン・PhysBone</td><td class="no">—</td><td class="yes">✓</td></tr>
-        <tr><td data-ko>실제 업로드 용량 측정 (NDMF 빌드)</td><td data-ja>実アップロード容量の測定</td><td class="no">—</td><td class="yes">✓</td></tr>
-        <tr><td data-ko>옷 텍스처 해상도 일괄 축소</td><td data-ja>衣装テクスチャ一括縮小</td><td class="no">—</td><td class="yes">✓</td></tr>
-      </tbody>
-    </table>
-    <div class="cta" style="margin-top:18px">
-      <a class="btn primary" data-link="booth" href="#"><span data-ko>Booth에서 받기</span><span data-ja>BOOTHで入手</span> →</a>
-    </div>
-    <p class="opts" data-ko>필요 환경: Unity 2022.3 · VRChat SDK 3.7+ · Modular Avatar 1.10+ · UI 한국어/日本語/English</p>
-    <p class="opts" data-ja>動作環境: Unity 2022.3 · VRChat SDK 3.7+ · Modular Avatar 1.10+ · UI 日本語/한국어/English</p>
-  </section>
-
   <section id="faq">
     <h2>FAQ</h2>
     <div data-ko>
@@ -456,7 +430,7 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
   <div class="wrap row">
     <div>© <span id="y"></span> Closet Kit</div>
     <div style="display:flex;gap:16px;flex-wrap:wrap">
-      <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a><a data-link="openchat" href="#"><span data-ko>오픈채팅</span><span data-ja>オープンチャット</span></a><a data-link="discord" href="#">Discord</a><a data-link="booth" href="#">BOOTH</a><a data-link="x" href="#">X</a><a data-link="mail" href="#"><span data-ko>메일 문의</span><span data-ja>メール</span></a>
+      <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a><a data-link="openchat" href="#"><span data-ko>오픈채팅</span><span data-ja>オープンチャット</span></a><a data-link="discord" href="#">Discord</a><a data-link="x" href="#">X</a><a data-link="mail" href="#"><span data-ko>메일 문의</span><span data-ja>メール</span></a>
     </div>
   </div>
   <div class="wrap"><details class="bizd" id="bizd" hidden><summary>사업자 정보</summary><div class="biz" id="biz"></div></details></div>
