@@ -137,6 +137,16 @@ footer .row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
 .bizd summary{cursor:pointer;color:var(--muted);width:max-content;list-style:none;font-style:italic}
 .bizd summary::-webkit-details-marker{display:none}
 .biz{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.booth{display:grid;gap:6px;font-size:14px}
+.booth[hidden]{display:none}
+.booth .bi{display:flex;gap:10px;align-items:center;background:var(--surface-2);border-radius:10px;padding:8px 12px}
+.booth .bi img{width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none;background:var(--line)}
+.booth .bi .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.booth .bi .nm small{display:block;color:var(--muted)}
+.booth .bi .pr{font-weight:800;white-space:nowrap}
+.booth .bi .pr.own{color:var(--ok)}
+.booth .bi .pr.err{color:var(--warn);font-weight:600}
+.booth-note{font-size:13px;color:var(--muted);margin:0}
 .estimate{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;background:var(--surface-2);border-radius:12px;padding:14px 16px}
 .estimate b{font-size:28px;letter-spacing:-.02em}
 .estimate small{color:var(--muted)}
@@ -197,6 +207,29 @@ window.BIZ = {
 // 사이트 문의/신청서 → 판매자 이메일로 전달 (Web3Forms 무료). 이메일 주소는 사이트에 노출되지 않습니다
 // web3forms.com 에서 받을 이메일을 입력하면 Access Key 가 메일로 옵니다 → 여기에 붙여넣기
 window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
+// 24시간 작업 옵션 — 다시 받으려면 true
+window.RUSH_ENABLED = false;
+// 에셋비: 신청서에 넣은 BOOTH 링크의 가격(엔)을 불러와 원화로 더합니다.
+// BOOTH_API = Google Apps Script 웹 앱 URL (docs/08_BOOTH_가격_API_설정.md). 비워 두면 이 기능은 꺼집니다
+window.BOOTH_API = "";
+window.JPY_KRW = 9.5;   // 환율 (엔 → 원)
+// 작업자가 이미 산 BOOTH 상품 → 에셋비 0원. 값 = 보유한 아바타 대응판 ("*" = 전부)
+window.OWNED = {
+  "7923451": ["Shinano", "Milltina"],              // Project-KATANA
+  "8497386": ["Milltina"],                         // DeviCute
+  "6005714": ["Rurune"],                           // SAMEHOLIC
+  "5842256": ["Lasyusha"],                         // Phantom Flare Ensemble
+  "7280599": ["Milltina"],                         // LingoPop Starlet
+  "8823315": ["Milltina", "Shinano", "Chocolat", "Lasyusha", "Rurune", "MAYO"], // Vestige
+  "8167875": ["Milltina"],                         // 天使と悪魔
+  "7635325": ["Milltina", "Shinano", "Lasyusha", "Rurune"], // ATTITUDE
+  "7124805": ["Milltina", "Shinano", "Chocolat"],  // Summer Mizugi
+  "8127867": ["Milltina", "Chocolat"],             // Straight_Flush
+  "6332168": ["Shinano"],                          // HuntingBunny
+  "7977491": ["*"],                                // ねこタイドボブヘア
+  "6287431": ["*"],                                // 4way Smooth Shift Hair
+  "7234297": ["*"]                                 // Lisette Bob
+};
 </script>
 
 <header class="top">
@@ -317,14 +350,14 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
         <a class="btn ghost" href="#order"><span data-ko>신청하기</span><span data-ja>依頼する</span></a>
       </div>
     </div>
-    <p class="opts" data-ko><b>옵션</b> · 1개 추가 +5,000원 · 아바타 2개로 나누기 +10,000원 · 비대응 의상 피팅 +30,000원부터 (사전 검토 후 가능할 때만) · 24시간 작업 +10,000원<br><small>모든 가격은 부가세 포함입니다.</small></p>
-    <p class="opts" data-ja><b>オプション</b> · 1点追加 +5,000ウォン · アバター分割 +10,000 · 非対応衣装フィッティング +30,000〜（事前確認後） · 24時間対応 +10,000<br><small>価格は韓国の付加価値税込みです。</small></p>
+    <p class="opts" data-ko><b>옵션</b> · 1개 추가 +5,000원 · 아바타 2개로 나누기 +10,000원 · 비대응 의상 피팅 +30,000원부터 (사전 검토 후 가능할 때만)<span class="rush-only"> · 24시간 작업 +10,000원</span><br><small>모든 가격은 부가세 포함입니다.</small></p>
+    <p class="opts" data-ja><b>オプション</b> · 1点追加 +5,000ウォン · アバター分割 +10,000 · 非対応衣装フィッティング +30,000〜（事前確認後）<span class="rush-only"> · 24時間対応 +10,000</span><br><small>価格は韓国の付加価値税込みです。</small></p>
 
     <h3 class="h3" data-ko>상호구매 — 작업자 보유 목록 기준</h3>
     <h3 class="h3" data-ja>相互購入 — 作業者の所持リスト基準</h3>
     <div class="grid g3">
       <div class="card"><div class="tier ok">0<small data-ko>원</small><small data-ja>ウォン</small></div><h3 data-ko>작업자가 보유한 아바타·의상</h3><h3 data-ja>作業者が所持済みのアバター・衣装</h3><p data-ko>아래 목록에 있으면 추가 비용이 없습니다.</p><p data-ja>下のリストにあれば追加費用なし。</p></div>
-      <div class="card"><div class="tier"><span data-ko>준비 중</span><span data-ja>準備中</span></div><h3 data-ko>작업자가 보유하지 않은 것</h3><h3 data-ja>作業者が未所持のもの</h3><p data-ko>지금은 받지 않습니다. 원하시는 상품을 알려 주시면 목록에 추가될 때 연락드립니다.</p><p data-ja>現在は受付していません。ご希望の商品をお知らせいただければ、追加時にご連絡します。</p></div>
+      <div class="card"><div class="tier"><span data-ko>BOOTH 가격</span><span data-ja>BOOTH価格</span></div><h3 data-ko>작업자가 보유하지 않은 것</h3><h3 data-ja>作業者が未所持のもの</h3><p data-ko>작업자도 같은 상품을 구매해야 하므로 BOOTH 가격(원화 환산)이 에셋비로 더해집니다. 신청서에 링크를 넣으면 자동으로 계산됩니다.</p><p data-ja>作業者も同じ商品を購入するため、BOOTH価格（ウォン換算）を素材費として加算します。フォームにリンクを入れると自動計算されます。</p></div>
       <div class="card"><div class="tier ok">0<small data-ko>원</small><small data-ja>ウォン</small></div><h3 data-ko>무료 배포 에셋</h3><h3 data-ja>無料配布素材</h3><p data-ko>양쪽 모두 BOOTH에서 받은 상태면 됩니다.</p><p data-ja>双方が BOOTH で入手済みであればOK。</p></div>
     </div>
     <div class="owned">
@@ -373,6 +406,7 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
       </label>
       <p class="warn" id="otherWarn" hidden><span data-ko>목록에 없는 아바타는 아직 접수하지 않습니다. 신청서를 보내 주시면 보유 목록에 추가될 때 먼저 연락드립니다.</span><span data-ja>リストにないアバターは現在受付していません。送っていただければ、追加時に優先してご連絡します。</span></p>
       <label><span data-ko>입힐 옷·헤어 BOOTH 링크 (한 줄에 하나)</span><span data-ja>衣装・髪型の BOOTH リンク（1行に1つ）</span> *<textarea name="items" rows="4" required placeholder="https://booth.pm/ko/items/..."></textarea></label>
+      <div class="booth" id="boothList" hidden></div>
       <fieldset>
         <legend data-ko>패키지</legend><legend data-ja>プラン</legend>
         <label class="pick"><input type="radio" name="plan" value="STANDARD" data-price="15000" data-limit="1"> STANDARD · 15,000 <small data-ko>(1개)</small><small data-ja>（1点）</small></label>
@@ -382,7 +416,7 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
       <fieldset>
         <legend data-ko>옵션</legend><legend data-ja>オプション</legend>
         <label class="pick"><input type="checkbox" name="split" data-price="10000"> <span data-ko>아바타 2개로 나누기 +10,000</span><span data-ja>アバター分割 +10,000</span></label>
-        <label class="pick"><input type="checkbox" name="rush" data-price="10000"> <span data-ko>24시간 작업 +10,000</span><span data-ja>24時間対応 +10,000</span></label>
+        <label class="pick rush-only"><input type="checkbox" name="rush" data-price="10000"> <span data-ko>24시간 작업 +10,000</span><span data-ja>24時間対応 +10,000</span></label>
         <label class="pick"><input type="checkbox" name="fit"> <span data-ko>비대응 의상 피팅 (+30,000부터, 검토 후 별도 견적)</span><span data-ja>非対応衣装フィッティング（+30,000〜・別途見積）</span></label>
       </fieldset>
       <label><span data-ko>요청사항 (기본으로 입을 옷, 메뉴 이름, 원하는 셰이프키 등)</span><span data-ja>ご要望（デフォルト衣装、メニュー名など）</span><textarea name="note" rows="3" maxlength="1000"></textarea></label>
@@ -614,20 +648,112 @@ window.ckSend = function(data, msgEl, btn){
   var won = function(n){ return n.toLocaleString('ko-KR'); };
   var ja = function(){ return document.documentElement.lang === 'ja'; };
   function lines(){ return f.items.value.split('\n').map(function(x){ return x.trim(); }).filter(Boolean); }
+
+  // ---- 24시간 옵션 막기 ----
+  if (!window.RUSH_ENABLED) {
+    document.querySelectorAll('.rush-only').forEach(function(e){ e.style.display = 'none'; });
+    if (f.rush) f.rush.checked = false;
+  }
+
+  // ---- BOOTH 링크 → 상품 정보·가격 (BOOTH 는 CORS 를 막아서 Apps Script 중계 API 를 거침. 상품 번호 외에는 아무것도 보내지 않음) ----
+  var booth = {};   // id → {state:'loading'|'ok'|'err', name, shop, img, variations:[{name,price}]}
+  function boothId(line){ var m = /booth\.pm\/(?:[a-z-]+\/)?items\/(\d+)/i.exec(line); return m ? m[1] : null; }
+  function cacheGet(id){ try { var c = JSON.parse(localStorage.getItem('ck-booth-' + id)); if (c && Date.now() - c.t < 864e5) return c.d; } catch(e) {} return null; }
+  function cacheSet(id, d){ try { localStorage.setItem('ck-booth-' + id, JSON.stringify({ t: Date.now(), d: d })); } catch(e) {} }
+  function fetchBooth(id){
+    if (booth[id]) return;
+    var c = cacheGet(id);
+    if (c) { booth[id] = c; return; }
+    booth[id] = { state: 'loading' };
+    var ctl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function(){ if (ctl) ctl.abort(); }, 15000);
+    fetch(window.BOOTH_API + (window.BOOTH_API.indexOf('?') < 0 ? '?' : '&') + 'id=' + id, ctl ? { signal: ctl.signal } : {})
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(j){
+        clearTimeout(timer);
+        if (!j || j.error || !j.variations) throw 0;
+        var d = { state: 'ok', name: j.name, shop: j.shop, img: j.img,
+                  variations: j.variations.map(function(v){ return { name: v.name || '', price: v.price || 0 }; }) };
+        booth[id] = d; cacheSet(id, d); calc();
+      })
+      .catch(function(){ clearTimeout(timer); booth[id] = { state: 'err' }; calc(); });
+  }
+  // 아바타 이름(영문/일본어)이 들어간 대응판 가격, 없으면 가장 싼 대응판
+  function pickVariation(d, avatar){
+    var vs = d.variations || [];
+    if (!vs.length) return null;
+    var keys = (avatar || '').split(' ').filter(Boolean).map(function(k){ return k.toLowerCase(); });
+    var hit = keys.length ? vs.filter(function(v){ var n = v.name.toLowerCase(); return keys.some(function(k){ return n.indexOf(k) >= 0; }); }) : [];
+    if (hit.length) return { v: hit.reduce(function(a, b){ return a.price <= b.price ? a : b; }), matched: true };
+    var paid = vs.filter(function(v){ return v.price > 0; });
+    var pool = paid.length ? paid : vs;
+    return { v: pool.reduce(function(a, b){ return a.price <= b.price ? a : b; }), matched: false };
+  }
+  function owned(id, avatar){
+    var o = (window.OWNED || {})[id];
+    if (!o) return false;
+    var en = (avatar || '').split(' ')[0];
+    return o.indexOf('*') >= 0 || (!!en && o.indexOf(en) >= 0);
+  }
+  var krw = function(yen){ return Math.ceil(yen * (window.JPY_KRW || 9.5) / 100) * 100; };
+  var esc = function(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  function assets(){
+    if (!window.BOOTH_API) return { rows: [], sum: 0, pending: 0, failed: 0 };
+    var avatar = f.avatar.value === 'other' ? '' : f.avatar.value;
+    var rows = [], sum = 0, pending = 0, failed = 0, seen = {};
+    lines().forEach(function(line){
+      var id = boothId(line);
+      if (!id || seen[id]) return;
+      seen[id] = 1;
+      fetchBooth(id);
+      var d = booth[id], row = { id: id, line: line, d: d };
+      if (owned(id, avatar)) { row.own = true; }
+      else if (d.state === 'ok') {
+        var pv = pickVariation(d, avatar);
+        if (pv) { row.yen = pv.v.price; row.krw = krw(pv.v.price); row.vname = pv.v.name; row.matched = pv.matched; sum += row.krw; }
+      }
+      else if (d.state === 'loading') pending++;
+      else failed++;
+      rows.push(row);
+    });
+    return { rows: rows, sum: sum, pending: pending, failed: failed };
+  }
+  function renderAssets(a){
+    var box = document.getElementById('boothList');
+    box.hidden = !a.rows.length;
+    var J = ja();
+    box.innerHTML = a.rows.map(function(r){
+      var d = r.d || {}, pr;
+      if (r.own) pr = '<span class="pr own">' + (J ? '所持済み 0' : '보유 0원') + '</span>';
+      else if (d.state === 'loading') pr = '<span class="pr">' + (J ? '確認中…' : '불러오는 중…') + '</span>';
+      else if (d.state === 'err') pr = '<span class="pr err">' + (J ? '取得失敗 · 見積時に案内' : '가격 확인 실패 · 견적 때 안내') + '</span>';
+      else if (r.krw != null) pr = '<span class="pr">+' + won(r.krw) + (J ? 'ウォン' : '원') + '</span>';
+      else pr = '<span class="pr err">' + (J ? '価格なし' : '가격 정보 없음') + '</span>';
+      var sub = d.state === 'ok' ? esc(d.shop) + (r.yen != null ? ' · ' + (r.vname ? esc(r.vname) + ' ' : '') + '¥' + r.yen.toLocaleString('ja-JP') + (r.matched ? '' : (J ? '（対応版を見積時に確認）' : ' (대응판은 견적 때 확인)')) : '') : esc(r.line);
+      return '<div class="bi">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '<img alt="">') +
+        '<div class="nm">' + esc(d.name || ('#' + r.id)) + '<small>' + sub + '</small></div>' + pr + '</div>';
+    }).join('') + (a.rows.length ? '<p class="booth-note">' + (J ? '素材費 = BOOTH価格 × ' + window.JPY_KRW + '（100ウォン単位切り上げ）。作業者が所持済みの商品は0ウォン。最終金額は見積時に確定します。' : '에셋비 = BOOTH 가격 × ' + window.JPY_KRW + ' (100원 단위 올림). 작업자가 이미 가진 상품은 0원이고, 최종 금액은 견적 확정 때 안내합니다.') + '</p>' : '');
+  }
   function calc(){
     var plan = f.querySelector('input[name=plan]:checked');
     var base = +plan.dataset.price, limit = +plan.dataset.limit;
     var n = lines().length, extra = Math.max(0, n - limit);
     var total = base + extra * 5000, parts = [plan.value + ' ' + won(base)];
     if (extra) parts.push((ja() ? '追加 ' : '추가 ') + extra + ' × 5,000');
-    ['split','rush'].forEach(function(k){ if (f[k].checked) { total += +f[k].dataset.price; parts.push((k === 'split' ? (ja() ? '分割' : '분리') : '24h') + ' ' + won(+f[k].dataset.price)); } });
+    ['split','rush'].forEach(function(k){ if (f[k] && f[k].checked) { total += +f[k].dataset.price; parts.push((k === 'split' ? (ja() ? '分割' : '분리') : '24h') + ' ' + won(+f[k].dataset.price)); } });
     if (f.fit.checked) parts.push(ja() ? 'フィッティング別途' : '피팅 별도 견적');
-    document.getElementById('estTotal').textContent = won(total) + (f.fit.checked ? '+' : '');
+    var a = assets();
+    renderAssets(a);
+    if (a.sum) { total += a.sum; parts.push((ja() ? '素材費 ' : '에셋비 ') + won(a.sum)); }
+    if (a.pending) parts.push(ja() ? '価格確認中…' : '가격 불러오는 중…');
+    if (a.failed) parts.push(ja() ? '一部価格は見積時に案内' : '일부 가격은 견적 때 안내');
+    document.getElementById('estTotal').textContent = won(total) + (f.fit.checked || a.failed ? '+' : '');
     document.getElementById('estDetail').textContent = parts.join(' · ') + (n ? '' : (ja() ? '（リンク未入力）' : ' (링크를 입력하면 개수가 반영됩니다)'));
     document.getElementById('otherWarn').hidden = f.avatar.value !== 'other';
-    return { plan: plan.value, total: total, n: n, extra: extra };
+    return { plan: plan.value, total: total, n: n, extra: extra, assets: a };
   }
-  f.addEventListener('input', calc);
+  var tmo;
+  f.addEventListener('input', function(e){ if (e.target === f.items) { clearTimeout(tmo); tmo = setTimeout(calc, 600); } else calc(); });
   f.addEventListener('change', calc);
   document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', calc); });
   calc();
@@ -644,7 +770,7 @@ window.ckSend = function(data, msgEl, btn){
     var e = calc();
     var opts = [];
     if (f.split.checked) opts.push('아바타 분리');
-    if (f.rush.checked) opts.push('24시간');
+    if (f.rush && f.rush.checked) opts.push('24시간');
     if (f.fit.checked) opts.push('비대응 피팅(견적 요청)');
     var txt = [
       '[Closet Kit 신청서]',
@@ -653,10 +779,15 @@ window.ckSend = function(data, msgEl, btn){
       '아바타: ' + (f.avatar.value === 'other' ? '기타 (보유 목록 외 — 추가 시 연락 요청)' : f.avatar.value),
       '패키지: ' + e.plan + ' / 항목 ' + e.n + '개' + (e.extra ? ' (추가 ' + e.extra + '개)' : ''),
       '옵션: ' + (opts.length ? opts.join(', ') : '없음'),
-      '예상 금액: ' + won(e.total) + '원' + (f.fit.checked ? ' + 피팅 별도' : '') + ' (최종 금액은 견적 확정 시 안내)',
+      '예상 금액: ' + won(e.total) + '원' + (f.fit.checked ? ' + 피팅 별도' : '') + (e.assets.sum ? ' (에셋비 ' + won(e.assets.sum) + '원 포함)' : '') + ' (최종 금액은 견적 확정 시 안내)',
       '',
       '[옷·헤어 링크]'
-    ].concat(lines(), ['', '[요청사항]', f.note.value.trim() || '-', '', '동의: 상호구매(구매 내역 캡처 첨부) / 비밀번호 미제공 / 결제·환불 규정 확인']).join('\n');
+    ].concat(lines().map(function(line){
+      var id = boothId(line), r = e.assets.rows.filter(function(x){ return x.id === id; })[0];
+      if (!r) return line;
+      var tag = r.own ? '보유 0원' : r.krw != null ? ((r.vname ? r.vname + ' ' : '') + '¥' + r.yen + ' → ' + won(r.krw) + '원' + (r.matched ? '' : ' (대응판 확인 필요)')) : '가격 확인 실패';
+      return line + (r.d && r.d.name ? '  — ' + r.d.name : '') + '  [' + tag + ']';
+    }), ['', '[요청사항]', f.note.value.trim() || '-', '', '동의: 상호구매(구매 내역 캡처 첨부) / 비밀번호 미제공 / 결제·환불 규정 확인']).join('\n');
     document.getElementById('orderText').value = txt;
     document.getElementById('orderOut').hidden = false;
     var mail = (window.LINKS && window.LINKS.mail) || '';
