@@ -144,6 +144,29 @@ footer .row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
 #orderOut[hidden]{display:none}
 #orderText{font-family:ui-monospace,Consolas,monospace;font-size:13px}
 button.btn{cursor:pointer;font:inherit;font-weight:700;border:1px solid transparent}
+/* 작업물 탭 + 확대 보기 */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.tabs button{font:inherit;font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pf{display:grid;gap:18px}
+.pf figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.pf figure[hidden]{display:none}
+.pf button.zoom{all:unset;display:block;cursor:zoom-in;width:100%}
+.pf button.zoom:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.pf img{width:100%;background:#f4f2f7}
+.pf figcaption{padding:12px 16px;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.pf figcaption b{color:var(--text);font-size:15px}
+.pf .tag{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:999px}
+.pf-note{font-size:13px;color:var(--muted);margin:14px 0 0}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(10,8,18,.88);display:flex;align-items:center;justify-content:center;padding:16px}
+.lightbox[hidden]{display:none}
+.lightbox .lb-inner{max-width:100%;max-height:100%;overflow:auto;-webkit-overflow-scrolling:touch}
+.lightbox img{max-width:none;width:min(1800px,calc(100vw - 32px));height:auto;border-radius:8px}
+@media (max-width:720px){.lightbox img{width:1400px}}
+.lightbox .lb-close,.lightbox .lb-nav{position:fixed;border:0;background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:22px;width:44px;height:44px;border-radius:50%;cursor:pointer}
+.lightbox .lb-close{top:14px;right:14px}
+.lightbox .lb-prev{left:14px;top:50%;transform:translateY(-50%)}
+.lightbox .lb-next{right:14px;top:50%;transform:translateY(-50%)}
 [data-ja]{display:none}
 html[lang="ja"] [data-ko]{display:none}
 html[lang="ja"] [data-ja]{display:revert}
@@ -181,6 +204,7 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
     <a class="brand" href="#"><i></i>Closet Kit</a>
     <nav class="links">
       <a href="#works"><span data-ko>작례</span><span data-ja>作例</span></a>
+      <a href="#portfolio"><span data-ko>작업물</span><span data-ja>制作実績</span></a>
       <a href="#pricing"><span data-ko>가격</span><span data-ja>料金</span></a>
       <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a>
       <a href="#faq">FAQ</a>
@@ -233,6 +257,36 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
       <figure><img src="assets/works-hair.jpg" alt="헤어 전환 작례" loading="lazy"><figcaption data-ko>헤어 3종 전환 + 투톤 컬러 커스텀</figcaption><figcaption data-ja>髪型3種の切替＋ツートーンカラー</figcaption></figure>
       <figure><img src="assets/works-face.jpg" alt="얼굴 셰이프키 커스텀 전후" loading="lazy"><figcaption data-ko>얼굴 셰이프키 커스텀 전/후 (표정 애니메이션과 충돌 없는 키만 사용)</figcaption><figcaption data-ja>顔シェイプキーのカスタム（表情と競合しないキーのみ）</figcaption></figure>
     </div>
+  </section>
+
+  <section id="portfolio">
+    <h2 data-ko>작업물</h2><h2 data-ja>制作実績</h2>
+    <p class="sub" data-ko>커미션 샘플입니다. 이미지를 누르면 크게 볼 수 있어요. 각 카드 아래에 사용한 BOOTH 상품명을 적어 두었습니다.</p>
+    <p class="sub" data-ja>コミッションのサンプルです。画像をタップすると拡大します。各カードの下に使用したBOOTH商品名を記載しています。</p>
+    <div class="tabs" role="tablist" aria-label="작업물 분류">
+      <button type="button" role="tab" aria-selected="true" data-tab="all"><span data-ko>전체</span><span data-ja>すべて</span></button>
+      <button type="button" role="tab" aria-selected="false" data-tab="outfit"><span data-ko>의상 세팅</span><span data-ja>衣装セットアップ</span></button>
+      <button type="button" role="tab" aria-selected="false" data-tab="fit"><span data-ko>미대응 의상 이식</span><span data-ja>非対応衣装の移植</span></button>
+      <button type="button" role="tab" aria-selected="false" data-tab="makeup"><span data-ko>메이크업</span><span data-ja>メイク</span></button>
+    </div>
+    <div class="pf" id="pfList">
+      <figure data-cat="outfit"><button type="button" class="zoom" aria-label="시나노 × Project-KATANA 크게 보기"><img src="assets/portfolio/01_shinano_katana.jpg" alt="시나노 × Project-KATANA" loading="lazy"></button>
+        <figcaption><b data-ko>시나노 × Project-KATANA</b><b data-ja>しなの × Project-KATANA</b><span class="tag" data-ko>전용 의상 · 메이크업</span><span class="tag" data-ja>対応衣装・メイク</span></figcaption></figure>
+      <figure data-cat="outfit"><button type="button" class="zoom" aria-label="루루네 × SAMEHOLIC 크게 보기"><img src="assets/portfolio/02_rurune_sameholic.jpg" alt="루루네 × SAMEHOLIC" loading="lazy"></button>
+        <figcaption><b data-ko>루루네 × SAMEHOLIC</b><b data-ja>ルルネ × SAMEHOLIC</b><span class="tag" data-ko>전용 의상 · MA 세팅 · 컬러</span><span class="tag" data-ja>対応衣装・MA設定・カラー</span></figcaption></figure>
+      <figure data-cat="outfit"><button type="button" class="zoom" aria-label="라슈샤 × Phantom Flare Ensemble 크게 보기"><img src="assets/portfolio/03_lasyusha_phantomflare.jpg" alt="라슈샤 × Phantom Flare Ensemble" loading="lazy"></button>
+        <figcaption><b data-ko>라슈샤 × Phantom Flare Ensemble</b><b data-ja>ラシューシャ × Phantom Flare Ensemble</b><span class="tag" data-ko>전용 의상</span><span class="tag" data-ja>対応衣装</span></figcaption></figure>
+      <figure data-cat="outfit"><button type="button" class="zoom" aria-label="밀티나 옷장 세팅 — 의상 6벌 크게 보기"><img src="assets/portfolio/04_milltina_closet.jpg" alt="밀티나 옷장 세팅 — 의상 6벌" loading="lazy"></button>
+        <figcaption><b data-ko>밀티나 옷장 세팅 — 의상 6벌</b><b data-ja>ミルティナ 衣装6着のクローゼット</b><span class="tag" data-ko>옷장 메뉴 · 헤어 교체</span><span class="tag" data-ja>メニュー切替・髪型</span></figcaption></figure>
+      <figure data-cat="fit"><button type="button" class="zoom" aria-label="밀티나 — 미대응 의상 이식 크게 보기"><img src="assets/portfolio/05_milltina_fitting.jpg" alt="밀티나 — 미대응 의상 이식" loading="lazy"></button>
+        <figcaption><b data-ko>밀티나 — 미대응 의상 이식</b><b data-ja>ミルティナ — 非対応衣装の移植</b><span class="tag" data-ko>미대응 의상 이식</span><span class="tag" data-ja>非対応衣装の移植</span></figcaption></figure>
+      <figure data-cat="fit"><button type="button" class="zoom" aria-label="쇼콜라 × 엘펠트 (마누카용 의상 이식) 크게 보기"><img src="assets/portfolio/07_chocolat_elphelt.jpg" alt="쇼콜라 × 엘펠트 (마누카용 의상 이식)" loading="lazy"></button>
+        <figcaption><b data-ko>쇼콜라 × 엘펠트 (마누카용 의상 이식)</b><b data-ja>ショコラ × エルフェルト（マヌカ用衣装の移植）</b><span class="tag" data-ko>미대응 의상 이식 · 헤어 · 본 리깅</span><span class="tag" data-ja>移植・髪型・ボーン</span></figcaption></figure>
+      <figure data-cat="makeup"><button type="button" class="zoom" aria-label="메이크업 샘플 10종 — 시나노 크게 보기"><img src="assets/portfolio/08_makeup_samples.jpg" alt="메이크업 샘플 10종 — 시나노" loading="lazy"></button>
+        <figcaption><b data-ko>메이크업 샘플 10종 — 시나노</b><b data-ja>メイクサンプル10種 — しなの</b><span class="tag" data-ko>메이크업 · 텍스처 편집</span><span class="tag" data-ja>メイク・テクスチャ編集</span></figcaption></figure>
+    </div>
+    <p class="pf-note" data-ko>렌더는 모두 업로드할 때와 같은 빌드(NDMF) 결과입니다. 아바타·의상의 저작권은 각 제작자에게 있습니다.</p>
+    <p class="pf-note" data-ja>レンダーはすべてアップロードと同じビルド（NDMF）結果です。アバター・衣装の著作権は各制作者に帰属します。</p>
   </section>
 
   <section id="pricing">
@@ -440,7 +494,52 @@ window.FORM_KEY = "be9b36c8-add6-4180-a3eb-2fe7c3489685";
   <div class="wrap"><details class="bizd" id="bizd" hidden><summary>i</summary><div class="biz" id="biz"></div></details></div>
 </footer>
 
+<div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="작업물 크게 보기">
+  <div class="lb-inner"><img id="lbImg" alt=""></div>
+  <button type="button" class="lb-close" aria-label="닫기">✕</button>
+  <button type="button" class="lb-nav lb-prev" aria-label="이전">‹</button>
+  <button type="button" class="lb-nav lb-next" aria-label="다음">›</button>
+</div>
+
 <script>
+// 작업물 탭 + 확대 보기
+(function(){
+  var list = document.getElementById('pfList');
+  if (!list) return;
+  var tabs = document.querySelectorAll('#portfolio .tabs button');
+  function show(cat){
+    tabs.forEach(function(b){ b.setAttribute('aria-selected', String(b.dataset.tab === cat)); });
+    list.querySelectorAll('figure').forEach(function(f){ f.hidden = !(cat === 'all' || f.dataset.cat === cat); });
+  }
+  tabs.forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.tab); }); });
+  var lb = document.getElementById('lb'), img = document.getElementById('lbImg'), cur = -1, last = null;
+  function visible(){ return Array.prototype.filter.call(list.querySelectorAll('figure'), function(f){ return !f.hidden; }); }
+  function open(i){
+    var v = visible(); if (!v.length) return;
+    cur = (i + v.length) % v.length;
+    var src = v[cur].querySelector('img');
+    img.src = src.src; img.alt = src.alt;
+    lb.hidden = false; document.body.style.overflow = 'hidden';
+    lb.querySelector('.lb-inner').scrollTo(0, 0);
+    lb.querySelector('.lb-close').focus();
+  }
+  function close(){ lb.hidden = true; document.body.style.overflow = ''; if (last) last.focus(); }
+  list.addEventListener('click', function(e){
+    var btn = e.target.closest('button.zoom'); if (!btn) return;
+    last = btn; open(visible().indexOf(btn.closest('figure')));
+  });
+  lb.querySelector('.lb-close').addEventListener('click', close);
+  lb.querySelector('.lb-prev').addEventListener('click', function(){ open(cur - 1); });
+  lb.querySelector('.lb-next').addEventListener('click', function(){ open(cur + 1); });
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target.classList.contains('lb-inner')) close(); });
+  document.addEventListener('keydown', function(e){
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') open(cur - 1);
+    else if (e.key === 'ArrowRight') open(cur + 1);
+  });
+})();
+
 (function(){
   document.querySelectorAll('[data-link]').forEach(function(a){
     var u = window.LINKS[a.getAttribute('data-link')];
