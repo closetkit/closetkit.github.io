@@ -163,6 +163,13 @@ table.cmp{width:100%;border-collapse:collapse;background:var(--surface);border:1
 .cmp .best-col{background:var(--accent-soft)}
 @media (max-width:480px){.cmp thead th:not(:first-child){font-size:11px;padding-left:4px;padding-right:4px}}
 [data-yen]{font-style:normal}
+/* 직접 하기 vs 맡기기 */
+.cmp.vs th,.cmp.vs td{text-align:left;width:auto;vertical-align:top}
+.cmp.vs th:first-child{width:24%}
+.cmp.vs td:last-child,.cmp.vs thead th:last-child{background:var(--accent-soft)}
+.cmp.vs td:nth-child(2){color:var(--muted)}
+.cmp.vs td:last-child{font-weight:600}
+@media (max-width:480px){.cmp.vs th,.cmp.vs td{font-size:13px;padding:10px 8px}.cmp.vs th:not(:first-child),.cmp.vs td:not(:first-child){width:auto}}
 .yen{display:block;font-size:13px;color:var(--muted);font-weight:600;letter-spacing:0}
 .reviews .card p{color:var(--text);font-size:15px}
 .reviews .who{margin-top:12px;font-size:13px;color:var(--muted)}
@@ -341,6 +348,48 @@ window.REVIEWS = [];
       <div class="card"><div class="ico">😇</div><h3 data-ko>소품이 안 꺼져요</h3><h3 data-ja>小物が消えない</h3><p data-ko>헤일로, 뿔처럼 Bone Proxy로 붙는 소품이 다른 옷을 골라도 계속 보이는 문제를 고칩니다.</p><p data-ja>Bone Proxy の小物が他の衣装でも見える問題を修正。</p></div>
       <div class="card"><div class="ico">📦</div><h3 data-ko>용량 초과</h3><h3 data-ja>容量オーバー</h3><p data-ko>비압축 500MB / 다운로드 200MB 한도. 실제로 재 보고 줄이거나 아바타를 나눠 드립니다.</p><p data-ja>非圧縮500MB / DL200MB。実測して削減・分割します。</p></div>
       <div class="card"><div class="ico">🧩</div><h3 data-ko>메뉴가 엉켜요</h3><h3 data-ja>メニューが混乱</h3><p data-ko>옷과 헤어를 라디오 메뉴로 묶어 파라미터 하나로 전환되게 정리합니다.</p><p data-ja>ラジオ式メニューにまとめ、パラメータ1つで切替。</p></div>
+    </div>
+  </section>
+
+  <section id="compare">
+    <h2 data-ko>직접 하기 vs 맡기기</h2><h2 data-ja>自分でやる vs 任せる</h2>
+    <p class="sub" data-ko>Unity로 직접 입히는 것도 물론 가능합니다. 다만 처음이라면 이런 차이가 있어요.</p>
+    <p class="sub" data-ja>Unityで自分で着せることももちろんできます。ただ、初めての場合はこんな違いがあります。</p>
+    <div class="cmp-wrap">
+      <table class="cmp vs" data-ko>
+        <thead><tr><th scope="col">항목</th><th scope="col">Unity로 직접</th><th scope="col">Closet Kit에 맡기기</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">준비</th><td>Unity · VCC · Modular Avatar · 셰이더를 설치하고 버전을 맞춰야 함</td><td>신청서 하나 + BOOTH 구매 내역 캡처</td></tr>
+          <tr><th scope="row">옷이 분홍색일 때</th><td>빠진 셰이더·패키지를 직접 찾아야 함</td><td>필요한 패키지를 확인해서 넣어 드림</td></tr>
+          <tr><th scope="row">여러 벌 갈아입기</th><td>메뉴·파라미터·애니메이션을 직접 구성</td><td>라디오 메뉴로 묶어 파라미터 하나로 전환</td></tr>
+          <tr><th scope="row">소품 (헤일로·뿔 등)</th><td>다른 옷을 골라도 계속 보이는 원인을 직접 추적</td><td>옷과 함께 켜지고 꺼지게 정리</td></tr>
+          <tr><th scope="row">옷 뚫림</th><td>포즈·표정마다 직접 확인</td><td>셰이프키 문제를 찾아서 수정</td></tr>
+          <tr><th scope="row">업로드 용량</th><td>업로드할 때 한도 초과를 알게 되는 경우가 많음</td><td>비압축 500MB / 다운로드 200MB 실측 리포트, 넘으면 최적화·분할</td></tr>
+          <tr><th scope="row">결과 확인</th><td>끝까지 해 봐야 알 수 있음</td><td>앞/뒤 렌더 미리보기를 보고 마음에 들면 결제</td></tr>
+          <tr><th scope="row">원본 데이터</th><td>작업 중 실수로 원본을 건드릴 수 있음</td><td>비파괴 방식 — 원본 프리팹은 그대로</td></tr>
+          <tr><th scope="row">문제가 생기면</th><td>커뮤니티·검색으로 직접 해결</td><td>납품물 문제는 무상 수정</td></tr>
+          <tr><th scope="row">비용</th><td>0원 (대신 설치·학습·작업 시간)</td><td>15,000원부터 · 1~3일</td></tr>
+        </tbody>
+      </table>
+      <table class="cmp vs" data-ja>
+        <thead><tr><th scope="col">項目</th><th scope="col">Unityで自分で</th><th scope="col">Closet Kitに任せる</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">準備</th><td>Unity・VCC・Modular Avatar・シェーダーを導入し、バージョンを合わせる必要あり</td><td>依頼フォーム1つ＋BOOTH購入履歴のスクショ</td></tr>
+          <tr><th scope="row">衣装がピンクのとき</th><td>不足しているシェーダー・パッケージを自分で探す</td><td>必要なパッケージを特定して導入</td></tr>
+          <tr><th scope="row">複数衣装の着せ替え</th><td>メニュー・パラメータ・アニメーションを自分で構成</td><td>ラジオメニューにまとめ、パラメータ1つで切替</td></tr>
+          <tr><th scope="row">小物（ヘイロー・角など）</th><td>他の衣装でも見える原因を自分で追う</td><td>衣装と一緒にON/OFFされるよう整理</td></tr>
+          <tr><th scope="row">衣装の貫通</th><td>ポーズ・表情ごとに自分で確認</td><td>シェイプキーの問題を見つけて修正</td></tr>
+          <tr><th scope="row">アップロード容量</th><td>アップロード時に上限オーバーに気づくことが多い</td><td>非圧縮500MB / DL200MBを実測してレポート、超えたら最適化・分割</td></tr>
+          <tr><th scope="row">仕上がりの確認</th><td>最後までやってみないと分からない</td><td>前後のレンダーを見てからお支払い</td></tr>
+          <tr><th scope="row">元データ</th><td>作業中に誤って元データを触ることも</td><td>非破壊方式 — 元のプレハブはそのまま</td></tr>
+          <tr><th scope="row">問題が起きたら</th><td>コミュニティや検索で自分で解決</td><td>納品物の不具合は無償で修正</td></tr>
+          <tr><th scope="row">費用</th><td>0円（その代わり導入・学習・作業の時間）</td><td>15,000ウォン〜（<i data-yen="15000"></i>）・1〜3日</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cta" style="margin-top:20px">
+      <a class="btn primary" href="#order"><span data-ko>맡기기 — 신청서 쓰기</span><span data-ja>任せる — 依頼フォーム</span> →</a>
+      <a class="btn ghost" href="#pricing"><span data-ko>가격 보기</span><span data-ja>料金を見る</span></a>
     </div>
   </section>
 
