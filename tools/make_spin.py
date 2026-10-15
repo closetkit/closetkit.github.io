@@ -35,5 +35,10 @@ for o in outfits:
         p = os.path.join(dst, o, f'{i:02d}.webp'); im.save(p, 'WEBP', quality=Q, method=6, alpha_quality=90)
         total += os.path.getsize(p)
 print(json.dumps({'frames': N, 'outfits': outfits, 'crop': box, 'size': f'{im.width}x{im.height}', 'total_kb': round(total / 1024)}, ensure_ascii=False))
+# Unity 스크립트가 만든 spin.json 이 있으면 그 이름(옷 오브젝트 이름)을 그대로 씀
+sj = os.path.join(src, 'spin.json')
+if os.path.exists(sj):
+    cfg = json.load(open(sj, encoding='utf-8')); cfg['outfits'] = [o for o in cfg['outfits'] if o['id'] in outfits]; cfg['frames'] = N
+    print('window.SPIN 항목:', json.dumps(cfg, ensure_ascii=False)); sys.exit()
 print('window.SPIN 예시:', json.dumps({'id': os.path.basename(dst.rstrip('/')), 'ko': '', 'ja': '', 'path': dst.rstrip('/').split('assets/', 1)[-1].join(['assets/', '/']) if 'assets/' in dst else dst, 'frames': N,
       'outfits': [{'id': o, 'ko': o, 'ja': o} for o in outfits]}, ensure_ascii=False))
