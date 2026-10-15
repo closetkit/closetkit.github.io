@@ -223,6 +223,20 @@ footer .row{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
 #orderOut[hidden]{display:none}
 #orderText{font-family:ui-monospace,Consolas,monospace;font-size:13px}
 button.btn{cursor:pointer;font:inherit;font-weight:700;border:1px solid transparent}
+/* 360° 회전 뷰어 */
+.spin{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:20px;align-items:start}
+@media (max-width:760px){.spin{grid-template-columns:1fr}}
+.spin-stage{position:relative;aspect-ratio:3/4;max-height:72vh;width:100%;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(ellipse at 50% 35%,var(--surface) 0%,var(--surface-2) 70%);cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.spin-stage:active{cursor:grabbing}
+.spin-stage:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.spin-stage::after{content:"";position:absolute;left:22%;right:22%;bottom:3.5%;height:4%;border-radius:50%;background:radial-gradient(ellipse,rgba(29,24,48,.22),rgba(29,24,48,0) 70%);pointer-events:none}
+.spin-stage canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.spin-load{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;height:4px;border-radius:2px;background:var(--line);overflow:hidden;transition:opacity .3s}
+.spin-load i{display:block;height:100%;width:0;background:var(--accent);transition:width .15s}
+.spin-hint{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:2;font-size:13px;font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px;white-space:nowrap;transition:opacity .4s;pointer-events:none}
+.spin-side h3{font-size:14px;margin:0 0 8px;color:var(--muted)}
+.spin-side .tabs{margin-bottom:18px}
+.spin-side .credit{font-size:12px;color:var(--muted);margin:6px 0 0}
 /* 작업물 탭 + 확대 보기 */
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
 .tabs button{font:inherit;font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
@@ -302,6 +316,11 @@ window.OWNED = {
 // 후기 — 고객이 공개를 허락한 후기만 넣어 주세요. 비워 두면([]) 후기 섹션이 숨겨집니다
 // 예) { name: "닉네임", avatar: "Milltina", plan: "DELUXE", ko: "한국어 후기", ja: "日本語の感想 (없으면 한국어가 나옵니다)" }
 window.REVIEWS = [];
+// 360° 회전 뷰어 — Unity 에서 각도별로 찍은 이미지 (3D 모델 파일은 올리지 않음). 비워 두면([]) 섹션이 숨겨집니다
+// 이미지 위치: {path}{옷 id}/00.webp … (frames-1).webp
+// 예) { id: "milltina", ko: "밀티나", ja: "ミルティナ", path: "assets/spin/milltina/", frames: 36,
+//       outfits: [{ id: "katana", ko: "Project-KATANA", ja: "Project-KATANA" }], credit: "DOLOSart · velvetsky" }
+window.SPIN = [];
 </script>
 
 <header class="top">
@@ -310,6 +329,7 @@ window.REVIEWS = [];
     <nav class="links" id="navLinks">
       <a href="#works"><span data-ko>작례</span><span data-ja>作例</span></a>
       <a href="#portfolio"><span data-ko>작업물</span><span data-ja>制作実績</span></a>
+      <a href="#spin" class="spin-link" hidden>360°</a>
       <a href="#pricing"><span data-ko>가격</span><span data-ja>料金</span></a>
       <a href="#order"><span data-ko>신청서</span><span data-ja>依頼</span></a>
       <a href="#faq">FAQ</a>
@@ -435,6 +455,27 @@ window.REVIEWS = [];
     </div>
     <p class="pf-note" data-ko>렌더는 모두 업로드할 때와 같은 빌드(NDMF) 결과입니다. 아바타·의상의 저작권은 각 제작자에게 있습니다.</p>
     <p class="pf-note" data-ja>レンダーはすべてアップロードと同じビルド（NDMF）結果です。アバター・衣装の著作権は各制作者に帰属します。</p>
+  </section>
+
+  <section id="spin" hidden>
+    <h2 data-ko>360° 돌려 보기</h2><h2 data-ja>360° ビュー</h2>
+    <p class="sub" data-ko>작업한 아바타를 직접 돌려 보세요. 옷 버튼을 누르면 같은 각도에서 바로 갈아입습니다.</p>
+    <p class="sub" data-ja>作業したアバターを回して見られます。衣装ボタンを押すと、同じ角度のまま着せ替えます。</p>
+    <div class="spin">
+      <div class="spin-stage" id="spinStage" tabindex="0" role="img" aria-roledescription="360° viewer">
+        <canvas id="spinCanvas"></canvas>
+        <span class="spin-hint" id="spinHint"><span data-ko>↔ 드래그해서 돌리기</span><span data-ja>↔ ドラッグで回転</span></span>
+        <div class="spin-load" id="spinLoad"><i></i></div>
+      </div>
+      <div class="spin-side">
+        <div id="spinAvatarsWrap"><h3 data-ko>아바타</h3><h3 data-ja>アバター</h3><div class="tabs" id="spinAvatars" role="tablist"></div></div>
+        <h3 data-ko>의상</h3><h3 data-ja>衣装</h3>
+        <div class="tabs" id="spinOutfits" role="tablist"></div>
+        <p class="credit" id="spinCredit"></p>
+        <p class="credit" data-ko>각도별 렌더 이미지입니다. 아바타·의상의 저작권은 각 제작자에게 있습니다.</p>
+        <p class="credit" data-ja>角度ごとのレンダー画像です。アバター・衣装の著作権は各制作者に帰属します。</p>
+      </div>
+    </div>
   </section>
 
   <section id="reviews" class="reviews" hidden>
@@ -698,6 +739,126 @@ window.REVIEWS = [];
 </div>
 
 <script>
+// 360° 회전 뷰어: 각도별 이미지를 캔버스에 그려 드래그로 돌림
+(function(){
+  var SP = (window.SPIN || []).filter(function(a){ return a && a.path && a.frames > 1 && a.outfits && a.outfits.length; });
+  if (!SP.length) return;
+  document.getElementById('spin').hidden = false;
+  document.querySelectorAll('.spin-link').forEach(function(a){ a.hidden = false; });
+  var stage = document.getElementById('spinStage'), cv = document.getElementById('spinCanvas'), ctx = cv.getContext('2d');
+  var load = document.getElementById('spinLoad'), hint = document.getElementById('spinHint');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cache = {}, cur = { a: 0, o: 0 }, pos = 0, vel = 0, auto = !reduce, dragging = false, lastX = 0, lastT = 0, visible = true, raf = 0, drawn = -1;
+  var ja = function(){ return document.documentElement.lang === 'ja'; };
+  function set(a, o){ return a.path + a.outfits[o].id + '/'; }
+  function frames(ai, oi){
+    var a = SP[ai], key = set(a, oi);
+    if (cache[key]) return cache[key];
+    var list = { imgs: [], ready: 0, n: a.frames };
+    cache[key] = list;
+    // 앞쪽(0번)부터, 그다음 사이사이를 채우는 순서로 받아서 일부만 받아도 대충 돌아가게
+    var order = [], step = a.frames; while (step >= 1) { for (var i = 0; i < a.frames; i += step) if (order.indexOf(i) < 0) order.push(i); step = Math.floor(step / 2); }
+    order.forEach(function(i){
+      var im = new Image(); im.decoding = 'async';
+      im.onload = function(){ im.ok = true; list.ready++; if (key === set(SP[cur.a], cur.o)) { progress(list); drawn = -1; kick(); } };
+      im.onerror = function(){ list.ready++; if (key === set(SP[cur.a], cur.o)) progress(list); };
+      im.src = key + ('0' + i).slice(-2) + '.' + (a.ext || 'webp');
+      list.imgs[i] = im;
+    });
+    return list;
+  }
+  function progress(list){
+    load.firstChild.style.width = (100 * list.ready / list.n) + '%';
+    load.style.opacity = list.ready >= list.n ? 0 : 1;
+  }
+  function size(){
+    var r = stage.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d); drawn = -1;
+  }
+  function nearest(list, i){
+    // 아직 안 받은 각도면 가장 가까운 받은 각도로 대신 그림
+    for (var k = 0; k < list.n; k++) { var a = list.imgs[(i + k) % list.n], b = list.imgs[(i - k + list.n) % list.n]; if (a && a.ok) return a; if (b && b.ok) return b; }
+    return null;
+  }
+  function draw(){
+    var list = frames(cur.a, cur.o), n = list.n, i = ((Math.round(pos) % n) + n) % n;
+    var im = nearest(list, i), id = i + ':' + cur.a + ':' + cur.o + ':' + (im ? im.src : '');
+    if (id === drawn) return;
+    drawn = id; ctx.clearRect(0, 0, cv.width, cv.height);
+    if (!im) return;
+    var s = Math.min(cv.width / im.naturalWidth, cv.height / im.naturalHeight), w = im.naturalWidth * s, h = im.naturalHeight * s;
+    ctx.drawImage(im, (cv.width - w) / 2, (cv.height - h) / 2, w, h);
+  }
+  function tick(){
+    raf = 0;
+    if (!dragging) {
+      if (Math.abs(vel) > 0.002) { pos += vel; vel *= 0.94; }
+      else if (auto) pos += SP[cur.a].frames / (60 * 14);   // 자동 회전: 한 바퀴 약 14초
+    }
+    draw();
+    if (visible && (auto || dragging || Math.abs(vel) > 0.002)) raf = requestAnimationFrame(tick);
+  }
+  function kick(){ if (!raf) raf = requestAnimationFrame(tick); }
+  function stopAuto(){ auto = false; hint.style.opacity = 0; }
+
+  stage.addEventListener('pointerdown', function(e){
+    dragging = true; stopAuto(); vel = 0; lastX = e.clientX; lastT = e.timeStamp;
+    stage.setPointerCapture(e.pointerId); kick();
+  });
+  stage.addEventListener('pointermove', function(e){
+    if (!dragging) return;
+    var per = stage.clientWidth * 1.1 / SP[cur.a].frames;    // 무대 폭의 1.1배 끌면 한 바퀴
+    var d = (e.clientX - lastX) / per, dt = Math.max(1, e.timeStamp - lastT);
+    // 프레임 번호가 커질수록 아바타 정면이 오른쪽으로 돌아감 (Unity 촬영 스크립트와 같은 방향)
+    pos += d; vel = d * (16 / dt); lastX = e.clientX; lastT = e.timeStamp; kick();
+  });
+  function up(){ if (dragging) { dragging = false; kick(); } }
+  stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', up);
+  stage.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); stopAuto(); vel = 0; pos += e.key === 'ArrowRight' ? 1 : -1; kick(); }
+  });
+
+  function tabs(box, items, active, onPick){
+    box.innerHTML = '';
+    items.forEach(function(it, i){
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab');
+      b.setAttribute('aria-selected', String(i === active));
+      var k = document.createElement('span'); k.setAttribute('data-ko', ''); k.textContent = it.ko || it.id;
+      var j = document.createElement('span'); j.setAttribute('data-ja', ''); j.textContent = it.ja || it.ko || it.id;
+      b.appendChild(k); b.appendChild(j);
+      b.addEventListener('click', function(){ onPick(i); });
+      b.addEventListener('pointerenter', function(){ if (box.id === 'spinOutfits') frames(cur.a, i); });   // 미리 받아 두기
+      box.appendChild(b);
+    });
+  }
+  function pickOutfit(i){
+    cur.o = i; var list = frames(cur.a, i); progress(list); drawn = -1;
+    Array.from(document.getElementById('spinOutfits').children).forEach(function(b, k){ b.setAttribute('aria-selected', String(k === i)); });
+    stage.setAttribute('aria-label', (SP[cur.a][ja() ? 'ja' : 'ko'] || SP[cur.a].id) + ' — ' + (SP[cur.a].outfits[i][ja() ? 'ja' : 'ko'] || SP[cur.a].outfits[i].id));
+    kick();
+  }
+  function pickAvatar(i){
+    pos = pos / SP[cur.a].frames * SP[i].frames; cur.a = i;   // 아바타를 바꿔도 같은 각도
+    Array.from(document.getElementById('spinAvatars').children).forEach(function(b, k){ b.setAttribute('aria-selected', String(k === i)); });
+    tabs(document.getElementById('spinOutfits'), SP[i].outfits, 0, pickOutfit);
+    document.getElementById('spinCredit').textContent = SP[i].credit || '';
+    pickOutfit(0);
+  }
+  document.getElementById('spinAvatarsWrap').hidden = SP.length < 2;
+  tabs(document.getElementById('spinAvatars'), SP, 0, pickAvatar);
+  size(); window.addEventListener('resize', function(){ size(); kick(); });
+  // 화면에 보일 때만 받고 돌림
+  var started = false;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(es){
+      visible = es[0].isIntersecting;
+      if (visible && !started) { started = true; pickAvatar(0); }
+      if (visible) kick();
+    }, { rootMargin: '200px' }).observe(stage);
+  } else { started = true; pickAvatar(0); }
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', function(){ if (started) setTimeout(function(){ pickOutfit(cur.o); }); }); });   // 언어가 바뀐 뒤에 라벨 갱신
+})();
+
 // 작업물 탭 + 확대 보기
 (function(){
   var list = document.getElementById('pfList');
