@@ -3,6 +3,7 @@
 사이트(`main` 브랜치)와 분리된 홍보 영상 소스입니다. 이 브랜치는 GitHub Pages 에 배포되지 않습니다.
 
 게시글 문안 · 해시태그 · 검색 등록 방법은 [POSTING.md](POSTING.md).
+사이트 360° 뷰어용 Unity 촬영 도구는 [tools/](tools/README.md).
 
 ## 완성본 — `promo/videos/`
 
