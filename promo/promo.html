@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Closet Kit promo</title>
 <style>
-:root{--bg:#13111c;--surface:#1c1929;--line:#2f2a45;--text:#eeeaff;--muted:#a59fbd;--accent:#9b83ff;--accent2:#c4b5ff;--accent-ink:#13111c;--ok:#4ed1a0;--pink:#ff8fd8}
+:root{--bg:#13111c;--surface:#1c1929;--line:#2f2a45;--text:#eeeaff;--muted:#a59fbd;--accent:#9b83ff;--accent2:#c4b5ff;--accent-ink:#13111c;--ok:#4ed1a0;--pink:#ff8fd8;--discord:#5865f2}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text)}
 body{font-family:"Noto Sans CJK KR","Noto Sans CJK JP",sans-serif;-webkit-font-smoothing:antialiased}
@@ -19,11 +19,10 @@ html[lang=ja] body{font-family:"Noto Sans CJK JP","Noto Sans CJK KR",sans-serif}
 #iris{position:absolute;border-radius:50%;border:8px solid var(--accent);box-shadow:0 0 40px rgba(155,131,255,.8),inset 0 0 30px rgba(155,131,255,.5)}
 #dot{position:absolute;border-radius:50%;background:var(--accent);box-shadow:0 0 30px rgba(155,131,255,.9)}
 .big{font-weight:700;letter-spacing:-.03em;line-height:1.18}
-.acc{color:var(--accent)}
 /* 글자 단위 마스크 */
-.ln{display:block;overflow:hidden;padding:.06em .08em .12em;margin:-.06em -.08em -.12em}
+.ln{display:block;overflow:hidden;padding:.06em .08em .12em;margin:-.06em -.08em -.12em;white-space:nowrap}
 .ch{display:inline-block;white-space:pre;transform-origin:50% 100%}
-.mk{position:relative;display:inline-block}
+.mk{position:relative;display:inline-block;color:var(--accent)}
 .mk .bar{position:absolute;left:-.12em;right:-.12em;bottom:.12em;height:.34em;background:rgba(155,131,255,.32);border-radius:.08em;transform-origin:left center}
 .mk .ln{position:relative}
 .brand{position:absolute;display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:-.02em}
@@ -34,18 +33,16 @@ html[lang=ja] body{font-family:"Noto Sans CJK JP","Noto Sans CJK KR",sans-serif}
 .chip .st{position:absolute;left:.5em;right:.5em;top:52%;height:.11em;border-radius:.06em;background:var(--pink);transform-origin:left center;box-shadow:0 0 12px rgba(255,143,216,.7)}
 .tag{display:inline-block;background:var(--accent);color:var(--accent-ink);border-radius:999px;font-weight:700;white-space:nowrap;box-shadow:0 8px 24px rgba(155,131,255,.35)}
 #s3bar{position:absolute;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--accent),var(--pink));transform-origin:left center;box-shadow:0 0 18px rgba(155,131,255,.6)}
-.price{display:inline-flex;align-items:flex-end;font-weight:700;letter-spacing:-.03em;line-height:1.15;font-variant-numeric:tabular-nums}
-.col{display:inline-block;height:1.15em;overflow:hidden}
-.strip{display:flex;flex-direction:column}
-.strip span{height:1.15em;display:block}
-.check{display:flex;align-items:center;font-weight:700;white-space:nowrap;position:relative}
-.check svg{flex:none;overflow:visible}
-.check .pulse{position:absolute;border-radius:50%;border:3px solid var(--ok)}
-.pill{display:inline-flex;align-items:center;border:2px solid var(--accent);border-radius:999px;font-weight:700;letter-spacing:.01em;position:relative;background:rgba(155,131,255,.08)}
-.cursor{display:inline-block;width:.08em;height:1em;background:var(--accent);margin-left:.06em;vertical-align:-.12em}
-.btn{display:inline-flex;align-items:center;gap:.3em;background:var(--accent);color:var(--accent-ink);font-weight:700;position:relative;overflow:hidden}
-.btn .shine{position:absolute;top:-30%;bottom:-30%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent)}
-.btn .arr{display:inline-block}
+/* 작업물 */
+#pfgrid{display:grid}
+.pf{position:relative;border-radius:18px;overflow:hidden;border:3px solid rgba(155,131,255,.85);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 30px rgba(155,131,255,.25);background:#dcdce6}
+.pf img{display:block;width:100%;height:100%;object-fit:cover;transform-origin:50% 60%}
+.pf .cap{position:absolute;left:14px;bottom:12px;background:rgba(19,17,28,.82);color:#fff;border-radius:999px;padding:.28em .8em;font-weight:700;white-space:nowrap;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+/* 엔드카드 */
+.dcpill{display:inline-flex;align-items:center;gap:.4em;background:var(--discord);color:#fff;border-radius:999px;font-weight:700;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(88,101,242,.45)}
+.dcpill svg{width:1.15em;height:1.15em;flex:none}
+.dcpill .shine{position:absolute;top:-30%;bottom:-30%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent)}
+.cursor{display:inline-block;width:.07em;height:1em;background:#fff;margin-left:.04em;vertical-align:-.12em}
 .credit{position:absolute;left:0;right:0;text-align:center;color:var(--muted);padding:0 40px}
 .bar3{position:absolute;top:-25%;height:150%;transform:skewX(-16deg)}
 #vignette{background:radial-gradient(ellipse at center,rgba(0,0,0,0) 52%,rgba(0,0,0,.5) 100%);pointer-events:none}
@@ -65,7 +62,7 @@ html[lang=ja] body{font-family:"Noto Sans CJK JP","Noto Sans CJK KR",sans-serif}
     <div class="layer center" id="s1">
       <div id="s1line" style="position:absolute;height:6px;border-radius:3px;background:var(--accent);box-shadow:0 0 20px rgba(155,131,255,.8)"></div>
       <div class="big" id="s1a"></div>
-      <div class="big acc mk" id="s1b"><span class="bar"></span></div>
+      <div class="big mk" id="s1b"><span class="bar"></span></div>
     </div>
     <div class="layer center" id="s2">
       <div id="chips" style="display:flex;flex-direction:column;align-items:center"></div>
@@ -77,19 +74,18 @@ html[lang=ja] body{font-family:"Noto Sans CJK JP","Noto Sans CJK KR",sans-serif}
       <div id="s3tags" style="position:absolute;left:0;right:0;display:flex;justify-content:center;flex-wrap:wrap"></div>
     </div>
     <div class="layer center" id="s4">
-      <div id="s4from" style="color:var(--muted);font-weight:700"></div>
-      <div class="price" id="s4price"></div>
-      <div id="s4yen" style="color:var(--muted);font-weight:700"></div>
-      <div id="checks" style="display:flex;flex-direction:column;align-items:flex-start"></div>
+      <div class="big" id="s4h"></div>
+      <div id="pfgrid"></div>
     </div>
     <div class="layer center" id="s5">
       <div id="s5logo" style="display:flex;align-items:center">
         <div class="logo" id="s5box"><svg viewBox="0 0 64 64"><path id="hanger" d="M20 18h24l6 10-8 4v18H22V32l-8-4z" pathLength="1" fill="#13111c" fill-opacity="0" stroke="#13111c" stroke-width="3.2" stroke-linejoin="round" stroke-dasharray="1"/></svg></div>
         <div class="big" id="s5name"></div>
       </div>
-      <div id="s5sub" style="color:var(--muted);font-weight:700"></div>
-      <div id="s5url"><span class="pill"><span id="url"></span><span class="cursor"></span></span></div>
-      <div id="s5btn"><span class="btn"><span id="btnt"></span><span class="arr">→</span><span class="shine"></span></span></div>
+      <div id="s5sub" style="color:var(--muted);font-weight:700;white-space:nowrap"></div>
+      <div id="s5lab" style="font-weight:700;white-space:nowrap"></div>
+      <div id="s5dc"><span class="dcpill"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37A19.8 19.8 0 0 0 15.4 2.8a13.7 13.7 0 0 0-.63 1.29 18.4 18.4 0 0 0-5.53 0 12.6 12.6 0 0 0-.64-1.29 19.7 19.7 0 0 0-4.92 1.53C.56 9.04-.29 13.6.13 18.1a19.9 19.9 0 0 0 6.03 3.05 14.7 14.7 0 0 0 1.29-2.1 12.9 12.9 0 0 1-2.03-.98l.5-.39a14.2 14.2 0 0 0 12.16 0l.5.39c-.65.39-1.33.71-2.04.98.37.74.8 1.44 1.29 2.1a19.8 19.8 0 0 0 6.04-3.05c.5-5.22-.84-9.74-3.55-13.73ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42c1.21 0 2.18 1.09 2.16 2.42 0 1.34-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.08-2.15-2.42s.95-2.42 2.15-2.42c1.21 0 2.18 1.09 2.16 2.42 0 1.34-.95 2.42-2.16 2.42Z"/></svg><span id="dcid"></span><span class="cursor"></span><span class="shine"></span></span></div>
+      <div id="s5url" style="color:var(--muted);font-weight:700;letter-spacing:.01em">closetkit.github.io</div>
     </div>
   </div>
 
@@ -106,35 +102,46 @@ var ASPECT = Q.get('aspect') || 'v', LANG = Q.get('lang') || 'ko';
 var V = ASPECT === 'v';
 document.documentElement.lang = LANG;
 var FPS = 30, N = 540, B0 = 180, BN = 150;   // 3D 샷: 180~329 프레임 (6.0~11.0s)
-var RATE = 9.5;
 var W = V ? 1080 : 1920, H = V ? 1920 : 1080;
+var DISCORD = 'blackrikka';
 
 var TXT = {
   ko: {
     s1a: 'BOOTH에서 산 옷,', s1b: '아직 못 입혔나요?',
     chips: [['🩷', '옷이 분홍색'], ['😇', '소품이 안 꺼져요'], ['📦', '용량 초과'], ['🧩', '메뉴가 엉켜요']],
     s2c: '전부, 맡겨 주세요.',
-    s3a: V ? '산 옷,\n입혀 드립니다.' : '산 옷, 입혀 드립니다.', tags: ['옷장 메뉴', '용량 리포트', '원본 그대로'],
-    from: '작업비', num: '15,000', unit: '원부터', yen: '',
-    checks: ['미리보기 보고 결제', '비밀번호 받지 않음', '상호구매 원칙'],
-    sub: 'VRChat 옷 입히기 · 옷장 세팅', btn: '신청서 쓰기',
-    credit: '작례 아바타·의상의 저작권은 각 제작자에게 있습니다.'
+    s3a: V ? '산 옷,\n입혀 드립니다.' : '산 옷, 입혀 드립니다.',
+    s4h: '작업물',
+    works: ['시나노 × Project-KATANA', '루루네 × SAMEHOLIC', '라슈샤 × Phantom Flare Ensemble', '쇼콜라 × 엘펠트'],
+    sub: 'VRChat 옷 입히기 커미션', lab: '견적은 디스코드로',
+    credit: '작업물 이미지의 아바타·의상 저작권은 각 제작자에게 있습니다.'
   },
   ja: {
     s1a: 'BOOTHで買った衣装、', s1b: 'まだ着せられてない？',
     chips: [['🩷', '衣装がピンク'], ['😇', '小物が消えない'], ['📦', '容量オーバー'], ['🧩', 'メニューが混乱']],
     s2c: 'ぜんぶ、任せてください。',
-    s3a: V ? '買った衣装、\n着せます。' : '買った衣装、着せます。', tags: ['着せ替えメニュー', '容量レポート', '非破壊'],
-    from: '作業費', num: '15,000', unit: 'ウォン〜', yen: '約¥' + (Math.round(15000 / RATE / 10) * 10).toLocaleString('ja-JP'),
-    checks: ['プレビュー確認後にお支払い', 'パスワード不要', '相互購入が原則'],
-    sub: 'VRChat 衣装の着せ替え・セットアップ', btn: '依頼フォームはこちら',
-    credit: '作例のアバター・衣装の著作権は各制作者に帰属します。'
+    s3a: V ? '買った衣装、\n着せます。' : '買った衣装、着せます。',
+    s4h: '制作実績',
+    works: ['しなの × Project-KATANA', 'ルルネ × SAMEHOLIC', 'ラシューシャ × Phantom Flare Ensemble', 'ショコラ × エルフェルト'],
+    sub: 'VRChat 衣装の着せ替え・改変代行', lab: 'お見積りはDiscordで',
+    credit: '制作実績画像のアバター・衣装の著作権は各制作者に帰属します。'
+  },
+  en: {
+    s1a: 'Bought outfits on BOOTH', s1b: 'but still can’t wear them?',
+    chips: [['🩷', 'Outfit turns pink'], ['😇', 'Props won’t turn off'], ['📦', 'Over the size limit'], ['🧩', 'Tangled menus']],
+    s2c: 'Leave it to Closet Kit.',
+    s3a: V ? 'Your outfits,\nfitted for you.' : 'Your outfits, fitted for you.',
+    s4h: 'Portfolio',
+    works: ['Shinano × Project-KATANA', 'Rurune × SAMEHOLIC', 'Lasyusha × Phantom Flare Ensemble', 'Chocolat × Elphelt'],
+    sub: 'VRChat outfit setup commissions', lab: 'Get a quote on Discord',
+    credit: 'Avatar and outfit copyrights belong to their respective creators.'
   }
 }[LANG];
+var TAGS = ['VRChat', 'Modular Avatar', 'BOOTH'];
 
 // 비율별 크기
-var SZ = V ? { s1: 104, chip: 58, s2c: 86, s3a: 98, tag: 46, from: 52, price: LANG === 'ja' ? 122 : 150, yen: 50, check: 60, name: 124, logo: 128, sub: 52, url: 54, btn: 66, credit: 26, brand: 44, blogo: 58 }
-           : { s1: 112, chip: 46, s2c: 88, s3a: 86, tag: 38, from: 42, price: 140, yen: 42, check: 48, name: 104, logo: 104, sub: 44, url: 44, btn: 54, credit: 24, brand: 34, blogo: 46 };
+var SZ = V ? { s1: 104, chip: 58, s2c: 86, s3a: 98, tag: 46, s4h: 88, pfw: 960, cap: 32, name: 124, logo: 128, sub: 50, lab: 44, dc: 70, url: 40, credit: 26, brand: 44, blogo: 58 }
+           : { s1: 112, chip: 46, s2c: 88, s3a: 86, tag: 38, s4h: 76, pfw: 880, cap: 28, name: 104, logo: 104, sub: 42, lab: 36, dc: 56, url: 32, credit: 24, brand: 34, blogo: 46 };
 
 function $(id){ return document.getElementById(id); }
 // 글자 단위로 쪼개기: 줄마다 마스크(.ln) 안에 .ch
@@ -165,43 +172,30 @@ var CH = TXT.chips.map(function(c){
 $('s3a').style.fontSize = SZ.s3a + 'px'; $('s3a').style.top = (V ? 190 : 46) + 'px';
 var K3 = kin($('s3a'), TXT.s3a);
 $('s3tags').style.gap = '16px'; $('s3tags').style.bottom = (V ? 340 : 60) + 'px';
-var TG = TXT.tags.map(function(t){ var d = document.createElement('span'); d.className = 'tag'; d.textContent = t; d.style.fontSize = SZ.tag + 'px'; d.style.padding = V ? '14px 30px' : '12px 26px'; $('s3tags').appendChild(d); return d; });
+var TG = TAGS.map(function(t){ var d = document.createElement('span'); d.className = 'tag'; d.textContent = t; d.style.fontSize = SZ.tag + 'px'; d.style.padding = V ? '14px 30px' : '12px 26px'; $('s3tags').appendChild(d); return d; });
 
-$('s4from').style.fontSize = SZ.from + 'px';
-var K4f = kin($('s4from'), TXT.from);
-$('s4price').style.fontSize = SZ.price + 'px';
-var ODO = [];
-Array.from(TXT.num).forEach(function(c){
-  if (/\d/.test(c)) {
-    var col = document.createElement('span'); col.className = 'col';
-    var strip = document.createElement('span'); strip.className = 'strip';
-    for (var r = 0; r < 3; r++) for (var d = 0; d < 10; d++) { var s = document.createElement('span'); s.textContent = d; strip.appendChild(s); }
-    col.appendChild(strip); $('s4price').appendChild(col); ODO.push({ strip: strip, target: 20 + (+c) });
-  } else { var s2 = document.createElement('span'); s2.className = 'col'; s2.textContent = c; s2.style.lineHeight = '1.15em'; $('s4price').appendChild(s2); ODO.push({ comma: s2 }); }
-});
-var unitEl = document.createElement('span'); unitEl.style.marginLeft = '.04em'; $('s4price').appendChild(unitEl);
-var K4u = kin(unitEl, TXT.unit);
-$('s4yen').style.fontSize = SZ.yen + 'px'; $('s4yen').textContent = TXT.yen;
-$('checks').style.gap = (V ? 28 : 20) + 'px'; $('checks').style.marginTop = (V ? 74 : 44) + 'px';
-var CK = TXT.checks.map(function(t){
-  var d = document.createElement('div'); d.className = 'check'; d.style.fontSize = SZ.check + 'px'; d.style.gap = '.38em';
-  var sz = Math.round(SZ.check * 1.25);
-  d.innerHTML = '<svg width="' + sz + '" height="' + sz + '" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="rgba(78,209,160,.14)" stroke="#4ed1a0" stroke-width="3" pathLength="1" stroke-dasharray="1" transform="rotate(-90 20 20)"/><path d="M12 20.5l5.5 5.5L28.5 14.5" fill="none" stroke="#4ed1a0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1"/></svg><span class="t"></span><span class="pulse"></span>';
-  d.querySelector('.t').textContent = t;
-  var pu = d.querySelector('.pulse'); pu.style.width = pu.style.height = sz + 'px'; pu.style.left = '0'; pu.style.top = '50%'; pu.style.marginTop = (-sz / 2) + 'px';
-  $('checks').appendChild(d);
-  return { el: d, circle: d.querySelector('circle'), path: d.querySelector('path'), text: d.querySelector('.t'), pulse: pu };
+$('s4h').style.fontSize = SZ.s4h + 'px';
+var K4 = kin($('s4h'), TXT.s4h);
+var grid = $('pfgrid');
+grid.style.gap = (V ? 26 : 24) + 'px'; grid.style.marginTop = (V ? 50 : 34) + 'px';
+grid.style.gridTemplateColumns = V ? SZ.pfw + 'px' : 'repeat(2,' + SZ.pfw + 'px)';
+var PF = TXT.works.map(function(name, i){
+  var d = document.createElement('div'); d.className = 'pf';
+  d.style.width = SZ.pfw + 'px'; d.style.height = (SZ.pfw / 4) + 'px';
+  d.innerHTML = '<img src="panels/p' + i + '.jpg" alt=""><span class="cap"></span>';
+  var cap = d.querySelector('.cap'); cap.textContent = name; cap.style.fontSize = SZ.cap + 'px';
+  grid.appendChild(d); return { el: d, img: d.querySelector('img'), cap: cap };
 });
 
 $('s5logo').style.gap = (V ? 26 : 22) + 'px';
 var box = $('s5box'); box.style.width = box.style.height = SZ.logo + 'px'; box.style.borderRadius = Math.round(SZ.logo * .27) + 'px';
 $('s5name').style.fontSize = SZ.name + 'px';
 var K5 = kin($('s5name'), 'Closet Kit');
-$('s5sub').style.fontSize = SZ.sub + 'px'; $('s5sub').style.marginTop = '22px'; $('s5sub').textContent = TXT.sub;
-var pill = $('s5url').firstChild; pill.style.fontSize = SZ.url + 'px'; pill.style.padding = V ? '18px 46px' : '14px 36px';
-$('s5url').style.marginTop = (V ? 66 : 40) + 'px';
-var btn = $('s5btn').firstChild; btn.style.fontSize = SZ.btn + 'px'; btn.style.padding = V ? '30px 58px' : '24px 46px'; btn.style.borderRadius = (V ? 28 : 22) + 'px';
-$('s5btn').style.marginTop = (V ? 38 : 28) + 'px'; $('btnt').textContent = TXT.btn;
+$('s5sub').style.fontSize = SZ.sub + 'px'; $('s5sub').style.marginTop = '20px'; $('s5sub').textContent = TXT.sub;
+$('s5lab').style.fontSize = SZ.lab + 'px'; $('s5lab').style.marginTop = (V ? 84 : 52) + 'px'; $('s5lab').textContent = TXT.lab;
+var pill = $('s5dc').firstChild; pill.style.fontSize = SZ.dc + 'px'; pill.style.padding = V ? '22px 52px 22px 40px' : '18px 42px 18px 32px';
+$('s5dc').style.marginTop = (V ? 22 : 16) + 'px';
+$('s5url').style.fontSize = SZ.url + 'px'; $('s5url').style.marginTop = (V ? 40 : 28) + 'px';
 $('credit').style.fontSize = SZ.credit + 'px'; $('credit').style.bottom = (V ? 300 : 34) + 'px'; $('credit').textContent = TXT.credit;
 var br = $('brand'); br.style.fontSize = SZ.brand + 'px'; br.style.left = (V ? 56 : 60) + 'px'; br.style.top = (V ? 120 : 46) + 'px';
 var bl0 = br.querySelector('.logo'); bl0.style.width = bl0.style.height = SZ.blogo + 'px';
@@ -253,11 +247,15 @@ function pad(n){ return ('000' + n).slice(-4); }
 var M = null;
 function measure(){
   // 화면 폭(좌우 여백 60px)을 넘는 문구는 글자 크기를 줄여 맞춤
-  ['s1a', 's1b', 's2c', 's3a', 's5name'].forEach(function(id){
-    var el = $(id), w = 0;
-    Array.from(el.querySelectorAll('.ln')).forEach(function(ln){ var s = 0; Array.from(ln.children).forEach(function(c){ s += c.getBoundingClientRect().width; }); w = Math.max(w, s); });
+  ['s1a', 's1b', 's2c', 's3a', 's4h', 's5name', 's5sub', 's5lab'].forEach(function(id){
+    var el = $(id), w = 0, lns = el.querySelectorAll('.ln');
+    if (lns.length) Array.from(lns).forEach(function(ln){ var s = 0; Array.from(ln.children).forEach(function(c){ s += c.getBoundingClientRect().width; }); w = Math.max(w, s); });
+    else w = el.scrollWidth;
     if (w > W - 120) el.style.fontSize = (parseFloat(el.style.fontSize) * (W - 120) / w).toFixed(1) + 'px';
   });
+  // 칩 줄도 화면을 넘으면 전체 크기를 줄임
+  if (!V) { var cw = 0; CH.forEach(function(c){ cw += c.getBoundingClientRect().width + 18; }); if (cw > W - 200) CH.forEach(function(c){ c.style.fontSize = (SZ.chip * (W - 200) / cw).toFixed(1) + 'px'; }); }
+  else CH.forEach(function(c){ var w = c.getBoundingClientRect().width; if (w > W - 120) c.style.fontSize = (SZ.chip * (W - 120) / w).toFixed(1) + 'px'; });
   M = { chips: CH.map(function(c){ var r = c.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }) };
   var last = $('s3a').lastChild.getBoundingClientRect();
   var lw = 0; Array.from($('s3a').lastChild.children).forEach(function(c){ lw += c.getBoundingClientRect().width; });
@@ -267,7 +265,7 @@ function measure(){
 
 var bl = $('bl'), blbg = $('blbg'), blFrame = -1, grainIdx = -1;
 blbg.src = 'blend/' + ASPECT + '/' + pad(BN) + '.png';
-var SWAP = 11.03;   // 색 막대가 화면을 덮는 순간 3D → 가격으로 교체
+var SWAP = 11.03;   // 색 막대가 화면을 덮는 순간 3D → 작업물로 교체
 
 window.seek = async function(f){
   if (!M) { await document.fonts.ready; measure(); }
@@ -286,7 +284,6 @@ window.seek = async function(f){
     b.e.style.transform = 'translate(' + (x - b.r) + 'px,' + (y - b.r) + 'px)';
     b.e.style.opacity = b.a * (0.7 + 0.3 * Math.sin(t * 1.7 + b.ph));
   });
-  // 처음 0.35초 페이드 인
   $('stage').style.opacity = eo(p(t, 0, .35));
 
   // ---------- 3D 레이어 (아이리스로 열고, 색 막대로 닫음) ----------
@@ -307,10 +304,9 @@ window.seek = async function(f){
   dot.style.width = dot.style.height = (dr * 2) + 'px'; dot.style.left = (W / 2 - dr) + 'px'; dot.style.top = (H / 2 - dr) + 'px';
   $('sweep').style.transform = 'translateX(' + lerp(-W * .6, W * 1.2, eio(p(t, 6.5, 7.4))) + 'px)';
   $('scrim').style.opacity = show3d ? iq : 0;
-  // 3D 동안은 배경 오로라·보케를 줄임
   var bgDim = show3d ? iq : 0;
   $('aurora').style.opacity = 1 - bgDim; $('bokeh').style.opacity = 1 - bgDim;
-  // 가격·엔드카드 배경: 마지막 3D 프레임을 크게 흐려서
+  // 작업물·엔드카드 배경: 마지막 3D 프레임을 크게 흐려서
   blbg.style.opacity = t >= SWAP ? .9 : 0;
   blbg.style.transform = 'scale(' + (1 + .06 * p(t, SWAP, 18)) + ') rotate(' + (1.5 * p(t, SWAP, 18)) + 'deg)';
 
@@ -327,11 +323,10 @@ window.seek = async function(f){
     var ln = $('s1line'); ln.style.width = (lq * (V ? 300 : 420)) + 'px'; ln.style.opacity = 1 - lo;
     ln.style.top = (H / 2 - SZ.s1 * 1.6) + 'px';
     ln.style.transform = 'translateY(' + (-30 * eo(lo)) + 'px)';
-    kinAnim(K1a, t, .3, .035, .55, 2.2, .018, .3);
-    kinAnim(K1b, t, .85, .04, .6, 2.25, .018, .3);
+    kinAnim(K1a, t, .3, .03, .55, 2.2, .015, .3);
+    kinAnim(K1b, t, .85, .035, .6, 2.25, .015, .3);
     var mq = eo(p(t, 1.35, 1.75)), mo = p(t, 2.2, 2.45);
     $('s1b').querySelector('.bar').style.transform = 'scaleX(' + mq * (1 - mo) + ')';
-    // 물음표 튕김
     var qm = K1b[K1b.length - 1], qq = p(t, 1.55, 2.0);
     if (t < 2.2 && qq > 0) qm.style.transform = 'translateY(' + (-22 * Math.sin(qq * Math.PI) * (1 - qq)) + 'px) rotate(' + (14 * Math.sin(qq * Math.PI * 2) * (1 - qq)) + 'deg)';
   }
@@ -339,7 +334,7 @@ window.seek = async function(f){
   // ---------- S2 문제 → 해결 (2.5~6s) ----------
   $('s2').style.display = t > 2.4 && t < 6.0 ? '' : 'none';
   if (t > 2.4 && t < 6.0) {
-    var imp = eio(p(t, 5.45, 5.85));   // 칩이 화면 가운데 점으로 빨려 들어감
+    var imp = eio(p(t, 5.45, 5.85));
     CH.forEach(function(c, k){
       var a = 2.55 + k * .38, q = p(t, a, a + .55), sg = k % 2 ? 1 : -1;
       var sp = spring(q);
@@ -354,13 +349,13 @@ window.seek = async function(f){
       var m = M.chips[k], dx = (W / 2 - m.x) * imp, dy = (H / 2 - m.y) * imp;
       tf(c, clamp(q * 2.2) * (1 - p(t, 5.55, 5.85)), sx + jit + dx, dy, (1 - .04 * stq) * (1 - .85 * imp), rot, imp * 6 + (1 - clamp(q * 2)) * 6);
     });
-    kinAnim(K2c, t, 4.85, .04, .5, 5.38, .015, .25);
+    kinAnim(K2c, t, 4.85, .035, .5, 5.38, .012, .25);
   }
 
   // ---------- S3 3D 위 문구 (6~11s) ----------
   $('s3').style.display = t > 6.1 && t < SWAP ? '' : 'none';
   if (t > 6.1 && t < SWAP) {
-    kinAnim(K3, t, 6.45, .045, .6, 10.45, .015, .3);
+    kinAnim(K3, t, 6.45, .04, .6, 10.45, .012, .3);
     var bq = eo5(p(t, 7.05, 7.55)), bo = p(t, 10.45, 10.7);
     $('s3bar').style.transform = 'scaleX(' + bq * (1 - bo) + ')';
     $('s3bar').style.opacity = 1 - bo;
@@ -377,35 +372,24 @@ window.seek = async function(f){
     b.style.left = lerp(W * 1.3, -W * 2.3, q) + 'px';
   });
 
-  // ---------- S4 가격·신뢰 (11~15s) ----------
+  // ---------- S4 작업물 (11~15s) ----------
   $('s4').style.display = t > SWAP && t < 15.25 ? '' : 'none';
   if (t > SWAP && t < 15.25) {
     var zq = ei(p(t, 14.75, 15.15));     // 줌 스루 퇴장
     $('s4').style.transform = 'scale(' + (1 + .55 * zq) + ')';
     $('s4').style.filter = zq > 0 ? 'blur(' + (zq * 16).toFixed(1) + 'px)' : 'none';
     $('s4').style.opacity = 1 - zq;
-    kinAnim(K4f, t, 11.15, .05, .45);
-    $('s4from').style.letterSpacing = (.5 * (1 - eo(p(t, 11.15, 11.7))) + .04) + 'em';
-    ODO.forEach(function(o, j){
-      if (o.comma) { o.comma.style.opacity = eo(p(t, 11.3, 11.6)); return; }
-      var q = eo5(p(t, 11.2 + j * .07, 12.15 + j * .07));
-      o.strip.style.transform = 'translateY(' + (-q * o.target * 1.15).toFixed(3) + 'em)';
-      o.strip.parentNode.style.opacity = clamp(p(t, 11.2 + j * .07, 11.4 + j * .07));
-      var v = (1 - q) * 4; o.strip.style.filter = v > .05 ? 'blur(' + v.toFixed(2) + 'px)' : 'none';
-    });
-    kinAnim(K4u, t, 11.95, .05, .45);
-    tf($('s4yen'), eo(p(t, 12.3, 12.6)), 0, 16 * (1 - eo(p(t, 12.3, 12.6))));
-    CK.forEach(function(c, m){
-      var a = 12.45 + m * .42;
-      var rq = eo(p(t, a, a + .4));
-      tf(c.el, rq, -40 * (1 - rq), 0, 1, 0, 0);
-      c.circle.setAttribute('stroke-dashoffset', 1 - eo(p(t, a, a + .4)));
-      c.path.setAttribute('stroke-dashoffset', 1 - eo(p(t, a + .28, a + .55)));
-      var tq = eo(p(t, a + .12, a + .6));
-      c.text.style.clipPath = 'inset(-20% ' + ((1 - tq) * 100).toFixed(1) + '% -20% 0)';
-      var pq = p(t, a + .5, a + .95);
-      c.pulse.style.opacity = pq > 0 && pq < 1 ? .8 * (1 - pq) : 0;
-      c.pulse.style.transform = 'scale(' + (1 + 1.1 * eo(pq)) + ')';
+    kinAnim(K4, t, 11.12, .05, .5);
+    PF.forEach(function(o, k){
+      var a = 11.3 + k * .17, q = p(t, a, a + .7), sg = (V ? k % 2 : (k % 2)) ? 1 : -1;
+      var sp = spring(q), rv = eo5(p(t, a, a + .55));
+      // 옆에서 튀어 들어오며 왼쪽부터 드러남
+      o.el.style.clipPath = 'inset(0 ' + ((1 - rv) * 100).toFixed(1) + '% 0 0 round 18px)';
+      tf(o.el, clamp(q * 3), sg * 160 * (1 - sp), 24 * (1 - sp), .94 + .06 * sp, sg * 2.5 * (1 - sp), (1 - clamp(q * 2.5)) * 8);
+      // 안쪽 이미지는 천천히 줌 아웃 (켄 번스)
+      o.img.style.transform = 'scale(' + (1.14 - .14 * eo(p(t, a, a + 3.2))) + ')';
+      var cq = p(t, a + .35, a + .75);
+      tf(o.cap, eo(cq), -20 * (1 - eo(cq)), 0);
     });
   }
 
@@ -422,21 +406,19 @@ window.seek = async function(f){
     hg.setAttribute('stroke-dashoffset', 1 - eio(p(t, 15.2, 15.75)));
     hg.setAttribute('fill-opacity', eo(p(t, 15.65, 15.9)));
     kinAnim(K5, t, 15.3, .04, .5);
-    var sq = eo(p(t, 15.6, 16.0));
+    var sq = eo(p(t, 15.55, 15.95));
     tf($('s5sub'), sq, 0, 14 * (1 - sq));
-    $('s5sub').style.letterSpacing = (.3 * (1 - sq)) + 'em';
-    var uq = p(t, 15.85, 16.3);
-    tf($('s5url'), clamp(uq * 2), 0, 0, .7 + .3 * spring(uq), 0, 0);
-    var url = 'closetkit.github.io', nch = Math.round(url.length * p(t, 16.0, 16.65));
-    $('url').textContent = url.slice(0, nch);
-    pill.querySelector('.cursor').style.opacity = (t < 16.65 || Math.floor(t * 2.4) % 2 === 0) ? 1 : 0;
-    var bq5 = p(t, 16.4, 16.95);
-    var pulse = t > 17.0 ? 1 + .022 * Math.sin((t - 17.0) * 5.5) : 1;
-    tf($('s5btn'), clamp(bq5 * 2.5), 0, 30 * (1 - spring(bq5)), (.6 + .4 * spring(bq5)) * pulse, 0, 0);
-    btn.style.boxShadow = '0 0 ' + (24 + 18 * Math.max(0, Math.sin((t - 16.9) * 3))) + 'px rgba(155,131,255,' + (.35 * clamp(bq5 * 2)) + ')';
-    btn.querySelector('.shine').style.transform = 'translateX(' + lerp(-180, 520, eio(p(t, 17.0, 17.55))) + '%)';
-    btn.querySelector('.arr').style.transform = 'translateX(' + (t > 16.9 ? 8 * Math.max(0, Math.sin((t - 16.9) * 5)) : 0) + 'px)';
-    $('credit').style.opacity = .8 * eo(p(t, 16.5, 16.9));
+    $('s5sub').style.letterSpacing = (.25 * (1 - sq)) + 'em';
+    var lb = eo(p(t, 15.8, 16.15));
+    tf($('s5lab'), lb, 0, 16 * (1 - lb));
+    var dq5 = p(t, 15.95, 16.45);
+    tf($('s5dc'), clamp(dq5 * 2.5), 0, 26 * (1 - spring(dq5)), (.6 + .4 * spring(dq5)) * (t > 17.0 ? 1 + .02 * Math.sin((t - 17.0) * 5.5) : 1), 0, 0);
+    var nch = Math.round(DISCORD.length * p(t, 16.15, 16.75));
+    $('dcid').textContent = DISCORD.slice(0, nch);
+    pill.querySelector('.cursor').style.opacity = (t < 16.75 || Math.floor(t * 2.4) % 2 === 0) ? 1 : 0;
+    pill.querySelector('.shine').style.transform = 'translateX(' + lerp(-180, 560, eio(p(t, 17.0, 17.55))) + '%)';
+    tf($('s5url'), eo(p(t, 16.6, 17.0)), 0, 10 * (1 - eo(p(t, 16.6, 17.0))));
+    $('credit').style.opacity = .8 * eo(p(t, 16.7, 17.1));
   } else $('credit').style.opacity = 0;
 
   // 브랜드 (훅 이후 ~ 엔드카드 전)
@@ -447,7 +429,8 @@ window.seek = async function(f){
   if (gi !== grainIdx) { $('grain').style.backgroundImage = 'url(grain/g' + gi + '.png)'; grainIdx = gi; }
   $('grain').style.backgroundPosition = ((Math.floor(f) * 137) % 512) + 'px ' + ((Math.floor(f) * 271) % 512) + 'px';
 
-  var waits = [bl, blbg].filter(function(im){ return !im.complete; }).map(function(im){ return new Promise(function(res){ im.onload = im.onerror = res; }); });
+  var imgs = [bl, blbg].concat(PF.map(function(o){ return o.img; }));
+  var waits = imgs.filter(function(im){ return !im.complete; }).map(function(im){ return new Promise(function(res){ im.onload = im.onerror = res; }); });
   if (waits.length) await Promise.all(waits);
 };
 window.N = N;
