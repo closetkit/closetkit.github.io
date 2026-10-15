@@ -3,34 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Closet Kit — VRChat 옷 입히기 · 옷장 세팅</title>
-<meta name="description" content="BOOTH에서 산 옷·헤어를 입히고, 메뉴에서 바로 갈아입을 수 있게 세팅해 드립니다. 미리보기 확인 후 결제, 상호구매 원칙.">
+<title>Closet Kit — VRChat 옷 입히기 커미션 · 옷장 세팅</title>
+<meta name="description" content="BOOTH에서 산 옷·헤어를 VRChat 아바타에 입히고, 메뉴에서 바로 갈아입을 수 있게 세팅해 드리는 커미션입니다. Modular Avatar 비파괴 · 용량 리포트 · 미리보기 확인 후 결제 · 15,000원부터.">
 <link rel="canonical" href="https://closetkit.github.io/">
+<link rel="sitemap" type="application/xml" href="https://closetkit.github.io/sitemap.xml">
 <meta name="theme-color" content="#7c5cff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Closet Kit">
 <meta property="og:url" content="https://closetkit.github.io/">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:locale:alternate" content="ja_JP">
-<meta property="og:title" content="Closet Kit — VRChat 옷 입히기 · 옷장 세팅">
-<meta property="og:description" content="산 옷, 입혀 드립니다. 여러 벌 옷장 메뉴 + 업로드 용량 진단.">
-<!-- 카톡·디스코드·X 미리보기는 절대 주소(https://…)여야 이미지가 뜹니다 -->
-<meta property="og:image" content="https://closetkit.github.io/assets/og.jpg">
+<meta property="og:title" content="Closet Kit — VRChat 옷 입히기 커미션 · 옷장 세팅">
+<meta property="og:description" content="산 옷, 입혀 드립니다. 여러 벌 옷장 메뉴 + 업로드 용량 진단. 미리보기 보고 결제, 15,000원부터.">
+<!-- 카톡·디스코드·X 미리보기는 절대 주소(https://…)여야 이미지가 뜹니다. 일본어 미리보기는 ja/index.html -->
+<meta property="og:image" content="https://closetkit.github.io/assets/og-ko.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Closet Kit — VRChat 옷 입히기 · 옷장 세팅">
+<meta property="og:image:alt" content="산 옷, 입혀 드립니다 — Closet Kit VRChat 옷 입히기 커미션">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Closet Kit — VRChat 옷 입히기 · 옷장 세팅">
-<meta name="twitter:description" content="산 옷, 입혀 드립니다. 여러 벌 옷장 메뉴 + 업로드 용량 진단.">
-<meta name="twitter:image" content="https://closetkit.github.io/assets/og.jpg">
+<meta name="twitter:title" content="Closet Kit — VRChat 옷 입히기 커미션 · 옷장 세팅">
+<meta name="twitter:description" content="산 옷, 입혀 드립니다. 여러 벌 옷장 메뉴 + 업로드 용량 진단. 미리보기 보고 결제, 15,000원부터.">
+<meta name="twitter:image" content="https://closetkit.github.io/assets/og-ko.jpg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Closet Kit — VRChat 옷 입히기 · 옷장 세팅",
+  "name": "Closet Kit — VRChat 옷 입히기 커미션 · 옷장 세팅",
+  "alternateName": ["Closet Kit — VRChat 衣装の着せ替え・改変代行"],
   "serviceType": "VRChat avatar outfit setup",
   "url": "https://closetkit.github.io/",
-  "image": "https://closetkit.github.io/assets/og.jpg",
+  "image": "https://closetkit.github.io/assets/og-ko.jpg",
   "description": "BOOTH에서 산 옷·헤어를 VRChat 아바타에 입히고, 메뉴에서 바로 갈아입을 수 있게 세팅해 드립니다. 미리보기 확인 후 결제, 상호구매 원칙.",
   "provider": { "@type": "Organization", "name": "Closet Kit", "url": "https://closetkit.github.io/" },
   "areaServed": ["KR", "JP"],
@@ -801,8 +803,8 @@ window.REVIEWS = [];
   }
 
   var LABELS = {
-    ko: { menu: '메뉴', lb: '작업물 크게 보기', close: '닫기', prev: '이전', next: '다음', tabs: '작업물 분류' },
-    ja: { menu: 'メニュー', lb: '制作実績を拡大', close: '閉じる', prev: '前へ', next: '次へ', tabs: '制作実績の分類' }
+    ko: { menu: '메뉴', lb: '작업물 크게 보기', close: '닫기', prev: '이전', next: '다음', tabs: '작업물 분류', title: 'Closet Kit — VRChat 옷 입히기 커미션 · 옷장 세팅' },
+    ja: { menu: 'メニュー', lb: '制作実績を拡大', close: '閉じる', prev: '前へ', next: '次へ', tabs: '制作実績の分類', title: 'Closet Kit — VRChat 衣装の着せ替え・改変代行' }
   };
   function setLang(l){
     document.documentElement.lang = l;
@@ -814,12 +816,14 @@ window.REVIEWS = [];
     lb.querySelector('.lb-prev').setAttribute('aria-label', T.prev);
     lb.querySelector('.lb-next').setAttribute('aria-label', T.next);
     document.querySelector('#portfolio .tabs').setAttribute('aria-label', T.tabs);
+    document.title = T.title;
     try { localStorage.setItem('ck-lang', l); } catch(e) {}
   }
   document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', function(){ setLang(b.dataset.lang); }); });
-  var saved = null;
+  // 언어 우선순위: 링크의 ?lang= (예: 일본 커뮤니티용 링크) → 마지막 선택 → 브라우저 언어
+  var saved = null, q = (location.search.match(/[?&]lang=(ko|ja)\b/) || [])[1];
   try { saved = localStorage.getItem('ck-lang'); } catch(e) {}
-  setLang(saved || ((navigator.language || '').indexOf('ja') === 0 ? 'ja' : 'ko'));
+  setLang(q || saved || ((navigator.language || '').indexOf('ja') === 0 ? 'ja' : 'ko'));
 })();
 
 // Web3Forms 전송 (공통)
